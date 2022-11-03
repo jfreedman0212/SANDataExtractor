@@ -5,13 +5,14 @@ class Nom:
   pass
 
 noms = []
+patternArticle = "^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$"
 
 f = open("source.txt", "r")
 for x in f:
   #print(x)
-  if "article" in x:
+  if re.search(patternArticle, x):
     currentNom = Nom()
-    currentNom.article = x
+    currentNom.article = re.findall(patternArticle, x)[0]
   elif "result" in x:
     currentNom.result = x
   elif "nominator" in x:

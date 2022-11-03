@@ -1,2 +1,14 @@
-[[Wookieepedia:Comprehensive article nominations/article1]], result = result1, nominator = nominator1, startdate = startdate1, WPs = WPs1, votes = votes1, objectors = objectors1, enddate = enddate1
-[[Wookieepedia:Comprehensive article nominations/article2]], result = result2, nominator = nominator2, startdate = startdate2, WPs = WPs2, votes = votes2, objectors = objectors2, enddate = enddate2
+[[Wookieepedia:Comprehensive article nominations/article1]],
+:''The following discussion is preserved as an archive of a [[Wookieepedia:Comprehensive article nominations|Comprehensive article nomination]] that was '''successful'''.,
+*'''Nominated by''':  [[User:Ayrehead02|Ayrehead02]] ([[User talk:Ayrehead02|talk]]) 17:16, 19 January 2022 (UTC),
+*'''WookieeProject (optional)''':,
+====Support====,
+====Object====,
+{{ECapproved|17:39, 26 January 2022 (UTC)}}
+[[Wookieepedia:Comprehensive article nominations/article2]],
+:''The following discussion is preserved as an archive of a [[Wookieepedia:Comprehensive article nominations|Comprehensive article nomination]] that was '''unsuccessful'''.,
+*'''Nominated by''': '''[[User:Samonic|<font style="color:#bd730b;">'''Samonic'''</font>]]''' [[File:ChissAscendancyCanonSymbol.svg|20px]] 08:08, 10 June 2022 (UTC),
+*'''WookieeProject (optional)''': [[Wookieepedia:WookieeProject Astrography|''Astrography'']], [[Wookieepedia:WookieeProject Novels|''Novels'']],
+====Support====,
+====Object====,
+{{ECapproved|20:09, 13 June 2022 (UTC)}}

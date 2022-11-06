@@ -1,9 +1,9 @@
 othertext
-[[Wookieepedia:Comprehensive article nominations/article1]]
+[[Wookieepedia:Comprehensive article nominations/Darth Bane]]
 othertext
 :''The following discussion is preserved as an archive of a [[Wookieepedia:Comprehensive article nominations|Comprehensive article nomination]] that was '''successful'''.
 othertext
-*'''Nominated by''':  [[User:Ayrehead02|Ayrehead02]] ([[User talk:Ayrehead02|talk]]) 17:16, 19 January 2022 (UTC)
+*'''Nominated by''':  [[User:Ayrehead02|Ayrehead02]] ([[User talk:Ayrehead02|talk]]) 17:16, 9 January 2022 (UTC)
 othertext
 *'''WookieeProject (optional)''': 
 othertext
@@ -13,13 +13,13 @@ othertext
 othertext
 {{ECapproved|17:39, 26 January 2022 (UTC)}}
 othertext
-[[Wookieepedia:Comprehensive article nominations/article2]]
+[[Wookieepedia:Comprehensive article nominations/Darth Bane (second nomination)]]
 othertext
 :''The following discussion is preserved as an archive of a [[Wookieepedia:Comprehensive article nominations|Comprehensive article nomination]] that was '''unsuccessful'''.
 othertext
 *'''Nominated by''': '''[[User:Samonic|<font style="color:#bd730b;">'''Samonic'''</font>]]''' [[File:ChissAscendancyCanonSymbol.svg|20px]] 08:08, 10 June 2022 (UTC)
 othertext
-*'''WookieeProject (optional)''': [[Wookieepedia:WookieeProject Astrography|''Astrography'']], [[Wookieepedia:WookieeProject Novels|''Novels'']]
+*'''WookieeProject (optional)''': [[Wookieepedia:WookieeProject Astrography|''Astrography'']], [[Wookieepedia:WookieeProject Novels|''Novels'']], WP:Resistance
 othertext
 ====Support====
 othertext

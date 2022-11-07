@@ -19,7 +19,7 @@ othertext
 othertext
 *'''Nominated by''': '''[[User:Samonic|<font style="color:#bd730b;">'''Samonic'''</font>]]''' [[File:ChissAscendancyCanonSymbol.svg|20px]] 08:08, 10 June 2022 (UTC)
 othertext
-*'''WookieeProject (optional)''': [[Wookieepedia:WookieeProject Astrography|''Astrography'']], [[Wookieepedia:WookieeProject Novels|''Novels'']], WP:Resistance
+*'''WookieeProject (optional)''': WP:SWR, [[Wookieepedia:WookieeProject Astrography|''Astrography'']], [[Wookieepedia:WookieeProject Novels|''Novels'']], WP:Resistance
 othertext
 ====Support====
 othertext

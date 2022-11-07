@@ -16,7 +16,6 @@ WPlist = [["Wookieepedia:WookieeProject Aliens", "WP:ALIENS", "WP:AS"], ["Wookie
 
 f = open("source.txt", "r")
 for x in f:
-  #print(x)
   if re.search(patternArticle, x):
     currentNom = Nom()
     currentNom.article = re.sub("(^\[\[Wookieepedia:Comprehensive article nominations/|\]\])", "", x).strip()
@@ -31,15 +30,12 @@ for x in f:
     currentNom.nominator = name
     currentNom.startdate = date
   elif re.search(patternWPs, x):
+    currentNom.WPs = []
     WPfield = re.sub("^\*'''WookieeProject \(optional\)''':", "", x).strip().upper()
-    #WPs = re.findall(WPlist, WPfield)
     for WookieeProject in WPlist:
       for WPname in WookieeProject:
         if re.search(WPname.upper(), WPfield):
-          print("yes")
-    print("done")
-    #print(WPs)
-    currentNom.WPs = WPfield
+          currentNom.WPs.append(re.sub("Wookieepedia:WookieeProject ", "", WookieeProject[0]))
   elif re.search(patternVotes, x):
     currentNom.votes = re.findall(patternVotes, x)[0]
   elif re.search(patternObjectors, x):
@@ -49,15 +45,15 @@ for x in f:
     noms.append(copy.deepcopy(currentNom))
 f.close()
 
-# f = open("result.txt", "a")
-# for x in noms:
-#     #change newlines to spaces
-#     f.write(x.article.rstrip() + ",\n" +
-#     x.result.rstrip() + ",\n" +
-#     x.nominator.rstrip() + ",\n" +
-#     x.startdate.rstrip() + ",\n" +
-#     x.WPs.rstrip() + ",\n" +
-#     x.votes.rstrip() + ",\n" +
-#     x.objectors.rstrip() + ",\n" +
-#     x.enddate.rstrip() + ",\n")
-# f.close()
+f = open("result.txt", "a")
+for x in noms:
+    #change newlines to spaces
+    f.write(x.article.rstrip() + ",\n" +
+    x.result.rstrip() + ",\n" +
+    x.nominator.rstrip() + ",\n" +
+    x.startdate.rstrip() + ",\n" +
+    ", ".join(x.WPs) + ",\n" +
+    x.votes.rstrip() + ",\n" +
+    x.objectors.rstrip() + ",\n" +
+    x.enddate.rstrip() + ",\n")
+f.close()

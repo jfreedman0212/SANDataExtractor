@@ -6,6 +6,7 @@ class Nom:
 
 noms = []
 isSupportSection = False
+isOpposeSection = False
 patternArticle = "^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$"
 patternResult = "^:''The following discussion is preserved as an archive of a \[\[Wookieepedia:Comprehensive article nominations\|Comprehensive article nomination\]\] that was '''.*'''."
 patternNominator = "^\*'''Nominated by''':.*$"
@@ -58,8 +59,17 @@ for x in f:
         name = re.sub("(\[\[User:|\|.*)", "", namePart)
         currentNom.votes.append(name)
   elif re.search(patternObjectors, x):
-    currentNom.objectors = re.findall(patternObjectors, x)[0]
+    isOpposeSection = True
+    currentNom.objectors = []
+  elif re.search("\[\[User:", x):
+    namePart = re.findall("\[\[User:.*\|", x)[0]
+    name = re.sub("(\[\[User:|\|.*)", "", namePart)
+    currentNom.objectors.append(name)
   elif re.search(patternEnddate, x):
+    isOpposeSection = False
+    currentNom.objectors = list(dict.fromkeys(currentNom.objectors))
+    currentNom.objectors.sort()
+    print(currentNom.objectors)
     currentNom.enddate = re.sub("(^.*approved\|| \(UTC\)|\}\})", "", x).strip()
     noms.append(copy.deepcopy(currentNom))
 f.close()
@@ -73,6 +83,6 @@ for x in noms:
     x.startdate.rstrip() + ",\n" +
     ", ".join(x.WPs) + ",\n" +
     ", ".join(x.votes) + ",\n" +
-    x.objectors.rstrip() + ",\n" +
+    ", ".join(x.objectors) + ",\n" +
     x.enddate.rstrip() + ",\n")
 f.close()

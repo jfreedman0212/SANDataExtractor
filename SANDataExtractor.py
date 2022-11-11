@@ -50,23 +50,13 @@ for x in f:
       if re.search("^#:<s>", x):
         pass
       else:
-        currentNom.votes.append([])
         if re.search("^#(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x):
-          currentNom.votes[-1].append(re.findall("^#(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x)[0])
+          currentNom.votes.append(re.findall("^#(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x)[0])
         else:
-          currentNom.votes[-1].append("")
-        
-        flatVoteList = []
-        for element in currentNom.votes:
-          if type(element) is list:
-            for item in element:
-                flatVoteList.append(item)
-          else:
-            flatVoteList.append(element)
-        
-        #currentNom.votes = [element for innerList in currentNom.votes for element in innerList]
-        print(flatVoteList)
-        currentNom.votes = flatVoteList
+          currentNom.votes.append("")
+        namePart = re.findall("\[\[User:.*\|", x)[0]
+        name = re.sub("(\[\[User:|\|.*)", "", namePart)
+        currentNom.votes.append(name)
   elif re.search(patternObjectors, x):
     currentNom.objectors = re.findall(patternObjectors, x)[0]
   elif re.search(patternEnddate, x):

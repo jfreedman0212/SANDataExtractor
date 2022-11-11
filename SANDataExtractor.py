@@ -5,7 +5,7 @@ class Nom:
   pass
 
 noms = []
-spreadsheetConstant = 6
+spreadsheetConstant = 30
 isSupportSection = False
 isOpposeSection = False
 
@@ -169,10 +169,8 @@ for x in f:
     isOpposeSection = True
 
     # pad the list with empty entries
-    i = 2 * spreadsheetConstant
-    while i > len(currentNom.votes):
+    while 2 * spreadsheetConstant > len(currentNom.votes):
         currentNom.votes.append("")
-        i = i - 1
 
     currentNom.objectors = []
 
@@ -206,10 +204,8 @@ for x in f:
         currentNom.objectors.remove(y)
 
     # pad the list with empty entries
-    i = spreadsheetConstant
-    while i > len(currentNom.objectors):
+    while spreadsheetConstant > len(currentNom.objectors):
         currentNom.objectors.append("")
-        i = i - 1
 
     # fetch and save the nom end date
     currentNom.enddate = re.sub("(^.*approved\|| \(UTC\)|\}\})", "", x).strip()

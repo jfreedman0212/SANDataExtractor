@@ -5,8 +5,10 @@ class Nom:
   pass
 
 noms = []
+spreadsheetConstant = 6
 isSupportSection = False
 isOpposeSection = False
+
 patternArticle = "^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$"
 patternResult = (
   "^:''The following discussion is preserved as an archive " +
@@ -65,6 +67,7 @@ f = open("source.txt", "r")
 for x in f:
 
   # process nom article title
+
   if re.search(patternArticle, x):
     currentNom = Nom()
     currentNom.article = re.sub(
@@ -74,7 +77,9 @@ for x in f:
     ).strip()
     print(currentNom.article)
 
+
   # process nom result
+
   elif re.search(patternResult, x):
     currentNom.result = re.sub(
       (
@@ -86,11 +91,17 @@ for x in f:
       x
     ).strip()
 
+
   # process nominator name and nom start date
+
   elif re.search(patternNominator, x):
+    # process nominator
     string = re.sub("^\*'''Nominated by''':[^\[]*", "", x).strip()
-    namePart = re.findall("\[\[User:.*\|", string)[0]
+    namePart = re.findall("\[\[User:.*\|", string)[0] # ignores co-nominators!
     name = re.sub("(\[\[User:|\|.*)", "", namePart)
+    currentNom.nominator = name
+
+    # process start date
     datePart = re.findall(
       (
         "\d\d:\d\d, \d+ (?:January|February|March|April|May|June|" +
@@ -98,18 +109,24 @@ for x in f:
       ),
       string
     )[0]
+
     date = re.sub(" \(UTC\)", "", datePart)
-    currentNom.nominator = name
     currentNom.startdate = date
 
+
   # process WPs
+
   elif re.search(patternWPs, x):
     currentNom.WPs = []
+    
+    # trim field text, strip spaces, convert to uppercase
     WPfield = re.sub(
       "^\*'''WookieeProject \(optional\)''':",
       "",
       x
     ).strip().upper()
+
+    # fetch and save WPs
     for WookieeProject in WPlist:
       for WPname in WookieeProject:
         if re.search(WPname.upper(), WPfield):
@@ -117,16 +134,22 @@ for x in f:
             re.sub("Wookieepedia:WookieeProject ", "", WookieeProject[0])
           )
 
+
   # process support votes
+
+  # initialize
   elif re.search(patternVotes, x):
     isSupportSection = True
     currentNom.votes = []
-  elif re.search(patternComments, x):
-    isSupportSection = False
+
+  # process each vote
   elif re.search("^#", x):
     if isSupportSection:
+      # omit struck votes
       if re.search("^#:<s>", x):
         pass
+
+      # fetch and save review panel vote tag if present
       else:
         if re.search("^#(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x):
           currentNom.votes.append(
@@ -134,46 +157,83 @@ for x in f:
           )
         else:
           currentNom.votes.append("")
+        
+        # fetch and save username from vote
         namePart = re.findall("\[\[User:.*\|", x)[0]
         name = re.sub("(\[\[User:|\|.*)", "", namePart)
         currentNom.votes.append(name)
 
-  # process objector names
+  # wrap up with support votes
   elif re.search(patternObjectors, x):
+    isSupportSection = False
     isOpposeSection = True
-    currentNom.objectors = []
-  elif re.search("\[\[User:", x):
-    namePart = re.findall("\[\[User:.*\|", x)[0]
-    name = re.sub("(\[\[User:|\|.*)", "", namePart)
-    currentNom.objectors.append(name)
 
-  # process nom end date
+    # pad the list with empty entries
+    i = 2 * spreadsheetConstant
+    while i > len(currentNom.votes):
+        currentNom.votes.append("")
+        i = i - 1
+
+    currentNom.objectors = []
+
+
+  # process usernames in objections
+
+  elif re.search("\[\[User:", x):
+    if isOpposeSection:
+      namePart = re.findall("\[\[User:.*\|", x)[0]
+      name = re.sub("(\[\[User:|\|.*)", "", namePart)
+      currentNom.objectors.append(name)
+
+
+  # wrap up with usernames in objections and process nom end date
+
   elif re.search(patternEnddate, x):
     isOpposeSection = False
+
+    # remove duplicate usernames and
+    # sort the list of usernames mentioned in objections alphabetically
     currentNom.objectors = list(dict.fromkeys(currentNom.objectors))
     currentNom.objectors.sort()
+
+    # remove nominator from the above list
     if currentNom.nominator in currentNom.objectors:
       currentNom.objectors.remove(currentNom.nominator)
-    for x in currentNom.votes:
-      if x in currentNom.objectors:
-        currentNom.objectors.remove(x)
-    print(currentNom.objectors)
+
+    # remove support voter names from the list
+    for y in currentNom.votes:
+      if y in currentNom.objectors:
+        currentNom.objectors.remove(y)
+
+    # pad the list with empty entries
+    i = spreadsheetConstant
+    while i > len(currentNom.objectors):
+        currentNom.objectors.append("")
+        i = i - 1
+
+    # fetch and save the nom end date
     currentNom.enddate = re.sub("(^.*approved\|| \(UTC\)|\}\})", "", x).strip()
+
+    # save the data about the current nom
     noms.append(copy.deepcopy(currentNom))
 f.close()
 
-# output the nomination data as a csv file
-separator = ",\n"
+
+# output the nomination data as a txt (csv) file
+
+separator = ", "
 f = open("result.txt", "a")
+
 for x in noms:
     f.write(
       x.article + separator +
       x.result + separator +
       x.nominator + separator +
       x.startdate + separator +
-      ", ".join(x.WPs) + separator +
+      "; ".join(x.WPs) + separator +
       ", ".join(x.votes) + separator +
       ", ".join(x.objectors) + separator +
-      x.enddate + separator
+      x.enddate + "\n"
     )
+
 f.close()

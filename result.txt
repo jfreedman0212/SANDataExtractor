@@ -1,16 +1,3 @@
-Darth Bane,
-successful,
-Ayrehead02,
-17:16, 9 January 2022,
-,
-, LucaRoR, {{EC}}, Fan26, {{EC}}, JediMasterMacaroni, , Loqiical, , DarthRuiz30,
-Manoof, Samonic,
-DarthRuiz30,
-Darth Bane (second nomination),
-unsuccessful,
-Samonic,
-08:08, 10 June 2022,
-Astrography, Novels, Rebels, Resistance,
-{{EC}}, Shayanomer, {{Inq}}, JediMasterMacaroni, {{EC}}, Commander Code-8, {{EC}}, OOM 224,
-LucaRoR, Manoof,
-OOM 224,
+Darth Bane, successful, Ayrehead02, 17:16, 9 January 2022, , , LucaRoR, {{EC}}, Fan26, {{EC}}, JediMasterMacaroni, , Loqiical, , DarthRuiz30, , Manoof, Samonic, , , 17:39, 26 January 2022
+Darth Bane (second nomination), unsuccessful, Samonic, 08:08, 10 June 2022, Astrography; Novels; Rebels; Resistance, {{EC}}, Shayanomer, {{Inq}}, JediMasterMacaroni, {{EC}}, Commander Code-8, {{EC}}, OOM 224, , , LucaRoR, Manoof, , , 20:09, 13 June 2022
+Darth Bane, successful, Ayrehead02, 17:16, 9 January 2022, , , LucaRoR, {{EC}}, Fan26, {{EC}}, JediMasterMacaroni, , Loqiical, , DarthRuiz30, {{EC}}, OOM 224, Manoof, Samonic, , , 17:39, 26 January 2022

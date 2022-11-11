@@ -5,13 +5,15 @@ class Nom:
   pass
 
 noms = []
+isSupportSection = False
 patternArticle = "^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$"
 patternResult = "^:''The following discussion is preserved as an archive of a \[\[Wookieepedia:Comprehensive article nominations\|Comprehensive article nomination\]\] that was '''.*'''."
 patternNominator = "^\*'''Nominated by''':.*$"
 patternWPs = "^\*'''WookieeProject \(optional\)''':.*$"
 patternVotes = "^====Support====.*$"
+patternComments = "^====Comments====.*$"
 patternObjectors = "^====Object====.*$"
-patternEnddate = "^.*approved\|.*$"
+patternEnddate = "^\{\{.*approved\|.*$"
 WPlist = [["Wookieepedia:WookieeProject Aliens", "WP:ALIENS", "WP:AS"], ["Wookieepedia:WookieeProject Ambition", "WP:AMB"], ["Wookieepedia:WookieeProject Astrography", "WP:AST"], ["Wookieepedia:WookieeProject Battlefront", "WP:Battlefront", "WP:BF", "WP:SWBF"], ["Wookieepedia:WookieeProject Chiss", "WP:Chiss", "WP:CHISS"], ["Wookieepedia:WookieeProject Comics", "WP:CO", "WP:COMICS"], ["Wookieepedia:WookieeProject Creators", "WP:CREA", "WP:CREATORS"], ["Wookieepedia:WookieeProject Data Seekers", "WP:DS"], ["Wookieepedia:WookieeProject Durge's Lance", "WP:CIS", "WP:SEP"], ["Wookieepedia:WookieeProject Entertainment and Culture", "WP:ENT", "WP:EAC", "Wookieepedia:WookieeProject Entertainment", "WP:Entertainment"], ["Wookieepedia:WookieeProject Ewoks", "WP:E", "WP:Ewoks", "WP:EWOKS"], ["Wookieepedia:WookieeProject Fantasy Flight Games", "WP:FFGAMES", "WP:FFG"], ["Wookieepedia:WookieeProject Galaxies", "WP:SWG"], ["Wookieepedia:WookieeProject Galaxy's Edge", "WP:GE"], ["Wookieepedia:WookieeProject Knights of the Old Republic", "WP:KOTOR"], ["Wookieepedia:WookieeProject Legacy's Era", "WP:Legacy", "WP:LE"], ["Wookieepedia:WookieeProject LEGO", "WP:LEGO"], ["Wookieepedia:WookieeProject New Sith Wars", "WP:NSW"], ["Wookieepedia:WookieeProject Novels", "WP:N", "WP:Novels", "Wookieeproject: Novels", "WP:NOVELS"], ["Wookieepedia:WookieeProject Pride", "WP:PRIDE", "WP:Pride"], ["Wookieepedia:WookieeProject Rebels", "WP:Rebels", "WP:REBELS", "WP:SWR"], ["Wookieepedia:WookieeProject Resistance", "WP:Resistance", "WookieeProject: Resistance"], ["Wookieepedia:WookieeProject Star Wars: Card Trader", "WP:SWCT"], ["Wookieepedia:WookieeProject Tales of the Jedi", "WP:TOTJ", "WP:Totj"], ["Wookieepedia:WookieeProject The Clone Wars", "WP:TCW", "WookieeProject The Clone Wars"], ["Wookieepedia:WookieeProject The High Republic", "WP:THR"], ["Wookieepedia:WookieeProject The Mandalorian", "WP:Mando", "WP:TMND"], ["Wookieepedia:WookieeProject The New Jedi Order", "WP:NJO"], ["Wookieepedia:WookieeProject The Old Republic", "WP:TOR"], ["Wookieepedia:WookieeProject Video Games", "WP:VG"], ["Wookieepedia:WookieeProject Warfare", "WP:Warfare"], ["Wookieepedia:WookieeProject Women", "WP:WOMEN", "WP:Women"]]
 
 f = open("source.txt", "r")
@@ -19,6 +21,7 @@ for x in f:
   if re.search(patternArticle, x):
     currentNom = Nom()
     currentNom.article = re.sub("(^\[\[Wookieepedia:Comprehensive article nominations/|\]\])", "", x).strip()
+    print(currentNom.article)
   elif re.search(patternResult, x):
     currentNom.result = re.sub("(^:''The following discussion is preserved as an archive of a \[\[Wookieepedia:Comprehensive article nominations\|Comprehensive article nomination\]\] that was '''|\.|''')", "", x).strip()
   elif re.search(patternNominator, x):
@@ -37,7 +40,33 @@ for x in f:
         if re.search(WPname.upper(), WPfield):
           currentNom.WPs.append(re.sub("Wookieepedia:WookieeProject ", "", WookieeProject[0]))
   elif re.search(patternVotes, x):
-    currentNom.votes = re.findall(patternVotes, x)[0]
+    #currentNom.votes = re.findall(patternVotes, x)[0]
+    isSupportSection = True
+    currentNom.votes = []
+  elif re.search(patternComments, x):
+    isSupportSection = False
+  elif re.search("^#", x):
+    if isSupportSection:
+      if re.search("^#:<s>", x):
+        pass
+      else:
+        currentNom.votes.append([])
+        if re.search("^#(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x):
+          currentNom.votes[-1].append(re.findall("^#(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x)[0])
+        else:
+          currentNom.votes[-1].append("")
+        
+        flatVoteList = []
+        for element in currentNom.votes:
+          if type(element) is list:
+            for item in element:
+                flatVoteList.append(item)
+          else:
+            flatVoteList.append(element)
+        
+        #currentNom.votes = [element for innerList in currentNom.votes for element in innerList]
+        print(flatVoteList)
+        currentNom.votes = flatVoteList
   elif re.search(patternObjectors, x):
     currentNom.objectors = re.findall(patternObjectors, x)[0]
   elif re.search(patternEnddate, x):
@@ -53,7 +82,7 @@ for x in noms:
     x.nominator.rstrip() + ",\n" +
     x.startdate.rstrip() + ",\n" +
     ", ".join(x.WPs) + ",\n" +
-    x.votes.rstrip() + ",\n" +
+    ", ".join(x.votes) + ",\n" +
     x.objectors.rstrip() + ",\n" +
     x.enddate.rstrip() + ",\n")
 f.close()

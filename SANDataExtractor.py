@@ -63,19 +63,20 @@ WPlist = [["Wookieepedia:WookieeProject Aliens", "WP:ALIENS", "WP:AS"],
 ["Wookieepedia:WookieeProject Women", "WP:WOMEN", "WP:Women"]
 ]
 
-f = open("source.txt", "r")
+f = open("ca_nom_archive_2022.txt", "r")
 for x in f:
 
   # process nom article title
 
   if re.search(patternArticle, x):
     currentNom = Nom()
+    currentNom.WPs = []
+    currentNom.objectors = []
     currentNom.article = re.sub(
       "(^\[\[Wookieepedia:Comprehensive article nominations/|\]\])",
       "",
       x
     ).strip()
-    print(currentNom.article)
 
 
   # process nom result
@@ -97,18 +98,20 @@ for x in f:
   elif re.search(patternNominator, x):
     # process nominator
     string = re.sub("^\*'''Nominated by''':[^\[]*", "", x).strip()
-    namePart = re.findall("\[\[User:.*\|", string)[0] # ignores co-nominators!
+    #namePart = re.findall("\[\[User:.*\|", string)[0] # ignores co-nominators!
+    namePart = "[[User:Manoof|"
     name = re.sub("(\[\[User:|\|.*)", "", namePart)
     currentNom.nominator = name
 
     # process start date
-    datePart = re.findall(
-      (
-        "\d\d:\d\d, \d+ (?:January|February|March|April|May|June|" +
-        "July|August|September|October|November|December) \d\d\d\d \(UTC\)"
-      ),
-      string
-    )[0]
+    # datePart = re.findall(
+    #   (
+    #     "\d\d:\d\d# \d+ (?:January|February|March|April|May|June|" +
+    #     "July|August|September|October|November|December) \d\d\d\d \(UTC\)"
+    #   ),
+    #   string
+    # )[0]
+    datePart = "14:19# 24 June 2020"
 
     date = re.sub(" \(UTC\)", "", datePart)
     currentNom.startdate = date
@@ -159,7 +162,8 @@ for x in f:
           currentNom.votes.append("")
         
         # fetch and save username from vote
-        namePart = re.findall("\[\[User:.*\|", x)[0]
+        #namePart = re.findall("\[\[User:.*\|", x)[0]
+        namePart = "[[User:Manoof|"
         name = re.sub("(\[\[User:|\|.*)", "", namePart)
         currentNom.votes.append(name)
 
@@ -173,6 +177,8 @@ for x in f:
         currentNom.votes.append("")
 
     currentNom.objectors = []
+    #PROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEM
+    #print(currentNom.objectors)
 
 
   # process usernames in objections
@@ -217,7 +223,7 @@ f.close()
 
 # output the nomination data as a txt (csv) file
 
-separator = ", "
+separator = "# "
 f = open("result.txt", "a")
 
 for x in noms:
@@ -227,8 +233,8 @@ for x in noms:
       x.nominator + separator +
       x.startdate + separator +
       "; ".join(x.WPs) + separator +
-      ", ".join(x.votes) + separator +
-      ", ".join(x.objectors) + separator +
+      "# ".join(x.votes) + separator +
+      "# ".join(x.objectors) + separator +
       x.enddate + "\n"
     )
 

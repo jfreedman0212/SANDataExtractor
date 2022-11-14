@@ -158,16 +158,16 @@ for x in f:
     currentNom.nominator = name
 
     # process start date
-    # datePart = re.findall(
-    #   (
-    #     "\d\d:\d\d# \d+ (?:January|February|March|April|May|June|" +
-    #     "July|August|September|October|November|December) \d\d\d\d \(UTC\)"
-    #   ),
-    #   string
-    # )[0]
-    datePart = "14:19# 24 June 2020"
+    datePart = re.findall(
+      (
+        "\d\d:\d\d, \d+ (?:January|February|March|April|May|June|" +
+        "July|August|September|October|November|December) \d\d\d\d \(UTC\)"
+      ),
+      string
+    )[0]
 
     date = re.sub(" \(UTC\)", "", datePart)
+    date = re.sub(",", "#", date)
     currentNom.startdate = date
 
 

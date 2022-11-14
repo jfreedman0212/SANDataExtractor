@@ -1,5 +1,6 @@
 import copy
 import re
+from datetime import datetime
 
 class Nom:
   pass
@@ -12,7 +13,12 @@ separator = "# "
 
 sourceFile = "ca_nom_archive_2022.txt"
 resultsFile = "result.txt"
-patternArticle = ("(^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$" +
+wikiDate = (
+  "\d+ (?:January|February|March|April|May|June|" +
+  "July|August|September|October|November|December) \d\d\d\d"
+)
+patternArticle = (
+  "(^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$" +
   "|^\[\[Wookieepedia:Good article nominations/.*\]\]$" +
   "|^\[\[Wookieepedia:Featured article nominations/.*\]\]$)"
 )
@@ -208,15 +214,21 @@ for x in f:
     # process start date
     datePart = re.findall(
       (
-        "\d\d:\d\d, \d+ (?:January|February|March|April|May|June|" +
-        "July|August|September|October|November|December) \d\d\d\d \(UTC\)"
+        "\d\d:\d\d, " + wikiDate + " \(UTC\)"
       ),
       string
     )[0]
 
-    date = re.sub(" \(UTC\)", "", datePart)
-    date = re.sub(",", "#", date)
-    currentNom.startdate = date
+    dateTime = re.sub(" \(UTC\)", "", datePart)
+    dateTime = re.sub(",", "#", dateTime)
+
+    # process date to the format used in spreadsheet
+    date = re.findall(wikiDate, dateTime)[0]
+    dateObject = datetime.strptime(date, "%d %B %Y")
+    dateFinal = dateObject.strftime('%Y-%m-%d')
+    dateTime = re.sub(date, "'" + dateFinal, dateTime)
+
+    currentNom.startdate = dateTime
 
 
   # process WPs
@@ -306,7 +318,15 @@ for x in f:
 
     # save nom end date
     if currentNom.enddate:
-      currentNom.enddate = re.sub(",", "#", currentNom.enddate)
+      dateTime = re.sub(",", "#", currentNom.enddate)
+
+      # process date to the format used in spreadsheet
+      date = re.findall(wikiDate, dateTime)[0]
+      dateObject = datetime.strptime(date, "%d %B %Y")
+      dateFinal = dateObject.strftime('%Y-%m-%d')
+      dateTime = re.sub(date, "'" + dateFinal, dateTime)
+
+      currentNom.enddate = dateTime
     else:
       currentNom.enddate = "#"
 

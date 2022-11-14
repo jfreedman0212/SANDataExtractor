@@ -21519,6 +21519,7 @@ Here is the mention in ''[[Thrawn Ascendancy: Lesser Evil]]'' ''In the distance 
 
 ====Comments====
 {{ECapproved|19:32, 7 June 2022 (UTC)}}
+[[Category:Archived nominations by User:Braha'tok enthusiast|{{SUBPAGENAME}}]]
 </div>
 [[Wookieepedia:Comprehensive article nominations/Repplic]]
 <div id="old-forum-warning" class="boilerplate metadata rfa" style="background-color: #F4F4F4; margin: 2em 0 0 0; padding: 0 10px 0 10px; border: 1px solid #AAAAAA;">
@@ -29715,7 +29716,7 @@ Took more than a week for me to notice that Jocasta missed this one on the CAN p
 
 ====Comments====
 {{ECapproved|15:27, 8 June 2022 (UTC)}}
-
+[[Category:Archived nominations by User:Hanzo Hasashi|{{SUBPAGENAME}}]]
 <!-- DO NOT WRITE BELOW THIS LINE! -->
 </div>
 [[Wookieepedia:Comprehensive article nominations/Uviuy Exen]]
@@ -30770,7 +30771,7 @@ Took more than a week for me to notice that Jocasta missed this one on the CAN p
 <div id="old-forum-warning" class="boilerplate metadata rfa" style="background-color: #F4F4F4; margin: 2em 0 0 0; padding: 0 10px 0 10px; border: 1px solid #AAAAAA;">
 :''The following discussion is preserved as an archive of a [[Wookieepedia:Comprehensive article nominations|Comprehensive article nomination]] that was '''unsuccessful'''. <span style="color: red;">'''Please do not modify it.'''</span>[[Category:Wookieepedia Comprehensive article nomination pages archive|{{SUBPAGENAME}}]]
 ==[[{{#titleparts:Wookieepedia:Comprehensive article nominations/Vor Deo||2}}]]==
-*'''Nominated by''': Eaglewing2444 16:37, 3 April 2022 (UTC)
+*'''Nominated by''': [[User:Eaglewing2444]] 16:37, 3 April 2022 (UTC)
 *'''Nomination comments''': Only just remembered about this article... 
 *'''WookieeProject (optional)''': WP:AST
 

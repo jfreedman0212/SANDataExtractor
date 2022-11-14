@@ -22,46 +22,96 @@ patternVotes = "^====Support====.*$"
 patternComments = "^====Comments====.*$"
 patternObjectors = "^====Object====.*$"
 patternEnddate = "^\{\{.*approved\|.*$"
-WPlist = [["Wookieepedia:WookieeProject Aliens", "WP:ALIENS", "WP:AS"],
-["Wookieepedia:WookieeProject Ambition", "WP:AMB"],
-["Wookieepedia:WookieeProject Astrography", "WP:AST"],
-["Wookieepedia:WookieeProject Battlefront", "WP:Battlefront", "WP:BF", "WP:SWBF"],
-["Wookieepedia:WookieeProject Chiss", "WP:Chiss", "WP:CHISS"],
-["Wookieepedia:WookieeProject Comics", "WP:CO", "WP:COMICS"],
-["Wookieepedia:WookieeProject Creators", "WP:CREA", "WP:CREATORS"],
-["Wookieepedia:WookieeProject Data Seekers", "WP:DS"],
-["Wookieepedia:WookieeProject Durge's Lance", "WP:CIS", "WP:SEP"],
+patternNomEnd = "\[\[Category:Archived nominations by "
+WPlist = [["Wookieepedia:WookieeProject Aliens",
+"WP:ALIENS",
+"WP:AS"],
+["Wookieepedia:WookieeProject Ambition",
+"WP:AMB"],
+["Wookieepedia:WookieeProject Astrography",
+"WP:AST"],
+["Wookieepedia:WookieeProject Battlefront",
+"WP:Battlefront",
+"WP:BF",
+"WP:SWBF"],
+["Wookieepedia:WookieeProject Chiss",
+"WP:Chiss",
+"WP:CHISS"],
+["Wookieepedia:WookieeProject Comics",
+"WP:CO",
+"WP:COMICS"],
+["Wookieepedia:WookieeProject Creators",
+"WP:CREA",
+"WP:CREATORS"],
+["Wookieepedia:WookieeProject Data Seekers",
+"WP:DS"],
+["Wookieepedia:WookieeProject Durge's Lance",
+"WP:CIS",
+"WP:SEP"],
 ["Wookieepedia:WookieeProject Entertainment and Culture",
 "WP:ENT",
 "WP:EAC",
 "Wookieepedia:WookieeProject Entertainment",
 "WP:Entertainment"],
-["Wookieepedia:WookieeProject Ewoks", "WP:E", "WP:Ewoks", "WP:EWOKS"],
-["Wookieepedia:WookieeProject Fantasy Flight Games", "WP:FFGAMES", "WP:FFG"],
-["Wookieepedia:WookieeProject Galaxies", "WP:SWG"],
-["Wookieepedia:WookieeProject Galaxy's Edge", "WP:GE"],
-["Wookieepedia:WookieeProject Knights of the Old Republic", "WP:KOTOR"],
-["Wookieepedia:WookieeProject Legacy's Era", "WP:Legacy", "WP:LE"],
-["Wookieepedia:WookieeProject LEGO", "WP:LEGO"],
-["Wookieepedia:WookieeProject New Sith Wars", "WP:NSW"],
+["Wookieepedia:WookieeProject Ewoks",
+"WP:E",
+"WP:Ewoks",
+"WP:EWOKS"],
+["Wookieepedia:WookieeProject Fantasy Flight Games",
+"WP:FFGAMES",
+"WP:FFG"],
+["Wookieepedia:WookieeProject Galaxies",
+"WP:SWG"],
+["Wookieepedia:WookieeProject Galaxy's Edge",
+"WP:GE"],
+["Wookieepedia:WookieeProject Knights of the Old Republic",
+"WP:KOTOR"],
+["Wookieepedia:WookieeProject Legacy's Era",
+"WP:Legacy",
+"WP:LE"],
+["Wookieepedia:WookieeProject LEGO",
+"WP:LEGO"],
+["Wookieepedia:WookieeProject New Sith Wars",
+"WP:NSW"],
 ["Wookieepedia:WookieeProject Novels",
 "WP:N",
 "WP:Novels",
 "Wookieeproject: Novels",
 "WP:NOVELS"],
-["Wookieepedia:WookieeProject Pride", "WP:PRIDE", "WP:Pride"],
-["Wookieepedia:WookieeProject Rebels", "WP:Rebels", "WP:REBELS", "WP:SWR"],
-["Wookieepedia:WookieeProject Resistance", "WP:Resistance", "WookieeProject: Resistance"],
-["Wookieepedia:WookieeProject Star Wars: Card Trader", "WP:SWCT"],
-["Wookieepedia:WookieeProject Tales of the Jedi", "WP:TOTJ", "WP:Totj"],
-["Wookieepedia:WookieeProject The Clone Wars", "WP:TCW", "WookieeProject The Clone Wars"],
-["Wookieepedia:WookieeProject The High Republic", "WP:THR"],
-["Wookieepedia:WookieeProject The Mandalorian", "WP:Mando", "WP:TMND"],
-["Wookieepedia:WookieeProject The New Jedi Order", "WP:NJO"],
-["Wookieepedia:WookieeProject The Old Republic", "WP:TOR"],
-["Wookieepedia:WookieeProject Video Games", "WP:VG"],
-["Wookieepedia:WookieeProject Warfare", "WP:Warfare"],
-["Wookieepedia:WookieeProject Women", "WP:WOMEN", "WP:Women"]
+["Wookieepedia:WookieeProject Pride",
+"WP:PRIDE",
+"WP:Pride"],
+["Wookieepedia:WookieeProject Rebels",
+"WP:Rebels",
+"WP:REBELS",
+"WP:SWR"],
+["Wookieepedia:WookieeProject Resistance",
+"WP:Resistance",
+"WookieeProject: Resistance"],
+["Wookieepedia:WookieeProject Star Wars: Card Trader",
+"WP:SWCT"],
+["Wookieepedia:WookieeProject Tales of the Jedi",
+"WP:TOTJ",
+"WP:Totj"],
+["Wookieepedia:WookieeProject The Clone Wars",
+"WP:TCW",
+"WookieeProject The Clone Wars"],
+["Wookieepedia:WookieeProject The High Republic",
+"WP:THR"],
+["Wookieepedia:WookieeProject The Mandalorian",
+"WP:Mando",
+"WP:TMND"],
+["Wookieepedia:WookieeProject The New Jedi Order",
+"WP:NJO"],
+["Wookieepedia:WookieeProject The Old Republic",
+"WP:TOR"],
+["Wookieepedia:WookieeProject Video Games",
+"WP:VG"],
+["Wookieepedia:WookieeProject Warfare",
+"WP:Warfare"],
+["Wookieepedia:WookieeProject Women",
+"WP:WOMEN",
+"WP:Women"]
 ]
 
 f = open("ca_nom_archive_2022.txt", "r")
@@ -73,6 +123,7 @@ for x in f:
     currentNom = Nom()
     currentNom.WPs = []
     currentNom.objectors = []
+    currentNom.enddate = ""
     currentNom.article = re.sub(
       "(^\[\[Wookieepedia:Comprehensive article nominations/|\]\])",
       "",
@@ -94,16 +145,16 @@ for x in f:
       "",
       x
     ).strip()
-    print(currentNom.result)
+
 
   # process nominator name and nom start date
 
   elif re.search(patternNominator, x):
     # process nominator
     string = re.sub("^\*'''Nominated by''':[^\[]*", "", x).strip()
-    #namePart = re.findall("\[\[User:.*\|", string)[0] # ignores co-nominators!
-    namePart = "[[User:Manoof|"
-    name = re.sub("(\[\[User:|\|.*)", "", namePart)
+    # the following ignores co-nominators for now!
+    namePart = re.findall("\[\[User:.*", string)[0]
+    name = re.sub("(\[\[User:|\|.*|\]\].*)", "", namePart)
     currentNom.nominator = name
 
     # process start date
@@ -220,6 +271,7 @@ for x in f:
     endDate = re.sub("(^.*approved\|| \(UTC\)|\}\})", "", x).strip()
     currentNom.enddate = re.sub(",", "#", endDate)
 
+  elif re.search(patternNomEnd, x):
     # save the data about the current nom
     noms.append(copy.deepcopy(currentNom))
 f.close()

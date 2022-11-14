@@ -173,7 +173,7 @@
 =====Dani=====
 *<s>The second paragraph under Capturing Theed reads that 1933 was present for the events of the capturing and that isn't depicted in the movie, as far as I know. [[User:NBDani|NBDani]] ([[User talk:NBDani|talk]]) 18:17, 24 March 2022 (UTC)</s>
 **What do you mean? He was deployed along with the rest of the droid army. Doesn't have to be depicted since [[2163]] says that he was part of the invasion force.
-*<s>"the battle droid was destroyed by Jedi Master Qui-Gon Jinn after they entered the hangar, which allowed them to board the starship and escape the planet with Queen Padmé Amidala and her entourage." This should be reworded as it appears the droid enetered the hangar. [[User:NBDani|NBDani]] ([[User talk:NBDani|talk]]) 18:17, 24 March 2022 (UTC)</s>
+*<s>"the battle droid was destroyed by Jedi Master Qui-Gon Jinn after they entered the hangar, which allowed them to board the starship and escape the planet with Queen Padm Amidala and her entourage." This should be reworded as it appears the droid enetered the hangar. [[User:NBDani|NBDani]] ([[User talk:NBDani|talk]]) 18:17, 24 March 2022 (UTC)</s>
 **Wording mistake. [[User:Erebus Chronus|<b><span style="color:#3e236e">Erebus Chronus</span></b>]] <sup>[[User talk:Erebus Chronus|<b><span style="color:#3e236e">(Talk)</span></b>]]</sup> 18:23, 24 March 2022 (UTC)
 
 =====Fan=====
@@ -994,7 +994,7 @@
 #[[User:AmazinglyCool|<span style="color: #721472">'''AmazinglyCool'''</span>]] [[File:CIS roundel.svg|15px]] [[User talk:AmazinglyCool|<span>('''talk''')</span>]]  11:52, 1 March 2022 (UTC)
 #{{AC}} [[User:Commander Code-8|<b><span style="color: Purple">Commander Code-8</span></b>]] <sup>[[User talk:Commander Code-8|<span style="color: Maroon">Hello There!</span>]]</sup> 07:54, 21 March 2022 (UTC)
 #{{AC}} [[User:Shayanomer|<span style="color:#DEB40D">'''Shayanomer'''</span>]] [[File:Din Djarin's clan.svg|15px]] ([[User talk:Shayanomer|<span style="color:#A06800">'''talk'''</span>]]) 03:15, 24 March 2022 (UTC)
-#{{AC}} We really need a word in English meaning "during or after," à la "by" for "in or before." [[User:OOM 224|<span style="color:#d1a111">'''OOM'''</span>]] [[User talk:OOM 224|<span style="color:#d1a111;font-family:franklin gothic">224</span>]] 22:06, 24 March 2022 (UTC)
+#{{AC}} We really need a word in English meaning "during or after,"  la "by" for "in or before." [[User:OOM 224|<span style="color:#d1a111">'''OOM'''</span>]] [[User talk:OOM 224|<span style="color:#d1a111;font-family:franklin gothic">224</span>]] 22:06, 24 March 2022 (UTC)
 
 ====Object====
 =====Shayanomer=====
@@ -1181,6 +1181,7 @@
 
 ====Comments====
 *{{ACapproved|19:11, 10 June 2022 (UTC)}}
+[[Category:Archived nominations by User:JediMasterMacaroni|{{SUBPAGENAME}}]]
 </div>
 [[Wookieepedia:Good article nominations/Chespea]]
 <div id="old-forum-warning" class="boilerplate metadata rfa" style="background-color: #F4F4F4; margin: 2em 0 0 0; padding: 0 10px 0 10px; border: 1px solid #AAAAAA;">
@@ -1619,15 +1620,15 @@ Just a question before I jump in: the Legends article is titled [[Dao's flagship
 
 [[Category:Archived nominations by User:Commander Code-8|{{SUBPAGENAME}}]]
 </div>
-[[Wookieepedia:Good article nominations/Elsinoré den Tasia]]
+[[Wookieepedia:Good article nominations/Elsinor den Tasia]]
 <div id="old-forum-warning" class="boilerplate metadata rfa" style="background-color: #F4F4F4; margin: 2em 0 0 0; padding: 0 10px 0 10px; border: 1px solid #AAAAAA;">
 :''The following discussion is preserved as an archive of a [[Wookieepedia:Good articles|Good article nomination]] that was '''successful'''. <span style="color: red;">'''Please do not modify it.'''</span>[[Category:Wookieepedia Good article nomination pages archive|{{SUBPAGENAME}}]]
-==[[{{#titleparts:Wookieepedia:Good article nominations/Elsinoré den Tasia||2}}]]==
+==[[{{#titleparts:Wookieepedia:Good article nominations/Elsinor den Tasia||2}}]]==
 *'''Nominated by''': [[User:Commander Code-8|<b><span style="color: Purple">Commander Code-8</span></b>]] <sup>[[User talk:Commander Code-8|<span style="color: Maroon">Hello There!</span>]]</sup> 04:15, 6 January 2022 (UTC)
 *'''Nomination comments''': Really like this backstory
 *'''WookieeProject (optional)''': [[Wookieepedia:WookieeProject Video Games]]
 
-{{GANvotes|Wookieepedia:Good article nominations/Elsinoré den Tasia|1}}
+{{GANvotes|Wookieepedia:Good article nominations/Elsinor den Tasia|1}}
 ====Support====
 #[[User:VergenceScatter|VergenceScatter]] ([[User talk:VergenceScatter|talk]]) 22:36, 18 February 2022 (UTC)
 #{{AC}} [[User:Shayanomer|<span style="color:#DEB40D">'''Shayanomer'''</span>]] [[File:Din Djarin's clan.svg|15px]] ([[User talk:Shayanomer|<span style="color:#A06800">'''talk'''</span>]]) 03:11, 23 February 2022 (UTC)
@@ -2615,7 +2616,7 @@ My thinking is that the best way to resolve this is to assume that Stark was inv
 **'Fraid not. [[User:Jade Moonstroller|Jade Moonstroller]] ([[User talk:Jade Moonstroller|talk]]) 16:01, 16 February 2022 (UTC)
 *<s>Please, give a look at my [https://starwars.fandom.com/wiki/Starfruit?type=revision&diff=11264261&oldid=11264140 copy-edit].</s> [[User:LucaRoR|<span style="color: blue; text-shadow:#0066ff 0.2em 0.2em 0.4em">'''LucaRoR'''</span>]] [[File:Sigil of House Serenno.png|18px]] <sup> ([[User talk:LucaRoR|<b style="color: black">'''Talk'''</b>]])</sup> 14:26, 15 February 2022 (UTC)
 **Oh yeah, neat copy/edit. [[User:Jade Moonstroller|Jade Moonstroller]] ([[User talk:Jade Moonstroller|talk]]) 16:01, 16 February 2022 (UTC)
-*<s>Does this "[[Starfruit crème liqueur]]" deserve a page?</s> [[User:LucaRoR|<span style="color: blue; text-shadow:#0066ff 0.2em 0.2em 0.4em">'''LucaRoR'''</span>]] [[File:Sigil of House Serenno.png|18px]] <sup> ([[User talk:LucaRoR|<b style="color: black">'''Talk'''</b>]])</sup> 08:12, 26 March 2022 (UTC)
+*<s>Does this "[[Starfruit crme liqueur]]" deserve a page?</s> [[User:LucaRoR|<span style="color: blue; text-shadow:#0066ff 0.2em 0.2em 0.4em">'''LucaRoR'''</span>]] [[File:Sigil of House Serenno.png|18px]] <sup> ([[User talk:LucaRoR|<b style="color: black">'''Talk'''</b>]])</sup> 08:12, 26 March 2022 (UTC)
 **Well now, that's interesting. I suppose it couldn't hurt for it to have a page. This is the exact context in which it appears: "For a palate cleanser, Ithorian starfruit blended in a light creme liqueur." Also, looks like the dash above 'creme' is omitted. I'll need to adjust that on the article. I wonder how I missed that. Now, I believe it says 'Ithorian starfruit' because the starfruit is grown on Ithor and the other dishes put the planet of origin before the dish itself in the report. [[User:Jade Moonstroller|Jade Moonstroller]] ([[User talk:Jade Moonstroller|talk]]) 13:14, 27 March 2022 (UTC)
 **Page created. [[Starfruit creme liqueur]]. [[User:Jade Moonstroller|Jade Moonstroller]] ([[User talk:Jade Moonstroller|talk]]) 01:42, 30 March 2022 (UTC)
 
@@ -2636,7 +2637,7 @@ My thinking is that the best way to resolve this is to assume that Stark was inv
 *<s>Would it suit to list [[Herd ship's bounty salad]] under dishes in the infobox?</s>'''—[[User:Spookywilloww|<span style="color:#aa76de; font-family:Trebuchet MS;">spookywilloww</span>]]<sup>[[User talk:Spookywilloww|<span style="color:#aa76de; font-family:Trebuchet MS;">talk</span>]]</sup>''' 16:10, 8 March 2022 (UTC)
 **Eh, I don't know. Starfruit was just the garnish on that salad, not an essential ingredient. [[User:Jade Moonstroller|Jade Moonstroller]] ([[User talk:Jade Moonstroller|talk]]) 06:11, 17 March 2022 (UTC)
 ***In doing a bit of research, it seems that the current precedent for food articles is that garnishes, and all ingredients that can be found, should be listed under dishes. Minor ingredients being added as an overall case can be seen in a lot of these older Dex's CAs, but also in more recent precedent such as [[Topato stew]], which does add the bits referred to as garnish.'''—[[User:Spookywilloww|<span style="color:#aa76de; font-family:Trebuchet MS;">spookywilloww</span>]]<sup>[[User talk:Spookywilloww|<span style="color:#aa76de; font-family:Trebuchet MS;">talk</span>]]</sup>''' 00:48, 18 March 2022 (UTC)
-****Okay, I added that, and the crème [[Liqueur/Legends|liqueur]] from the ''Gem of Alderaan'' thing. [[User:Jade Moonstroller|Jade Moonstroller]] ([[User talk:Jade Moonstroller|talk]]) 05:04, 19 March 2022 (UTC)
+****Okay, I added that, and the crme [[Liqueur/Legends|liqueur]] from the ''Gem of Alderaan'' thing. [[User:Jade Moonstroller|Jade Moonstroller]] ([[User talk:Jade Moonstroller|talk]]) 05:04, 19 March 2022 (UTC)
 
 =====Manoof=====
 *<s>I hate to do this but I think this needs to be split between two articles based on the gem campaign: [[Starfruit]] and [[Ithorian starfruit]], a type of starfruit. Reason being is that the gem campaign is worded such that the recipe there is a specific variety of starfruit, being Ithorian. The other mentions from what I can see don't specify this because it's insinuated by surrounding context to be Ithorian variety&mdash;Tiny death star has it in the Ithorian section, Obi-wan notes it specifically as Ithorian and Jettster mentions it in the context of Ithorian originated recipe. This could also explain the discrepancy in Betrayal if it isn't specified to be an Ithorian starfruit? Happy for others to weigh in especially ACs... [[User:Manoof|Manoof]] <small>(he/him/his)</small> ([[User_talk:Manoof|talk]]) 13:34, 9 April 2022 (UTC)</s>
@@ -3498,7 +3499,7 @@ My thinking is that the best way to resolve this is to assume that Stark was inv
 ***It still needs to be changed to "seashore."
 ****Huh, thought I'd done that.
 *<s>Is there not a quote from Ackbar or Mothma that can be used in "History"?</s> [[User:Master Fredcerique|<span style="color: #45CF10">'''MasterFred'''</span>]][[File:Commerce Guild.svg|20px]][[User talk:Master Fredcerique|<span style="color: #0674F3">('''talk''')</span>]] 23:55, 1 February 2022 (UTC)
-**The only quote that directly references the Sea is this: "'I must compliment you on the decor—I find it most pleasing. You grew up in one of Chandrila’s port cities, did you not?'
+**The only quote that directly references the Sea is this: "'I must compliment you on the decor—I find it most pleasing. You grew up in one of Chandrilas port cities, did you not?'
 'Yes, my mother was the governor there. I learned to love the Silver Sea. I find that making my home over in the image of where I lived in better times is good for my sanity.'"
 ***I think that would work decently as a quote for that section. [[User:Master Fredcerique|<span style="color: #45CF10">'''MasterFred'''</span>]][[File:Commerce Guild.svg|20px]][[User talk:Master Fredcerique|<span style="color: #0674F3">('''talk''')</span>]] 19:21, 11 February 2022 (UTC)
 ****Which part? [[User:VergenceScatter|VergenceScatter]] ([[User talk:VergenceScatter|talk]]) 21:13, 11 February 2022 (UTC)
@@ -4675,7 +4676,7 @@ I figured the only relevant part of this is the quote that's already in the intr
 {{GANvotes|Wookieepedia:Good article nominations/Namuura Din|1}}
 ====Support====
 #{{AC}} [[User:OOM 224|<span style="color:#d1a111">'''OOM'''</span>]] [[User talk:OOM 224|<span style="color:#d1a111;font-family:franklin gothic">224</span>]] 00:33, 11 July 2022 (UTC)
-#And here I thought someone had nominated [[Din (lizard)|that Din]] as a good article&hellip;😛 '''[[User:Samonic|<font style="color:#bd730b;">'''Samonic'''</font>]]''' [[File:ChissAscendancyCanonSymbol.svg|20px]] 15:45, 20 July 2022 (UTC)
+#And here I thought someone had nominated [[Din (lizard)|that Din]] as a good article&hellip; '''[[User:Samonic|<font style="color:#bd730b;">'''Samonic'''</font>]]''' [[File:ChissAscendancyCanonSymbol.svg|20px]] 15:45, 20 July 2022 (UTC)
 #{{AC}} [[User:JediMasterMacaroni|<font style="font-family: 'Copperplate Gothic', copperplate; color:#ff4d00;">'''JediMasterMacaroni'''</font>]][[User talk:JediMasterMacaroni|<sup><font style="color:#ff4d00;">(Talk)</font></sup>]] 16:31, 8 August 2022 (UTC)
 #'''[[User:Fan26|<span style="color:#003">Fan26</span>]]''' (<span style="color:#003">'''[[User talk:Fan26|Talk]]'''</span>) 22:32, 9 August 2022 (UTC)
 #[[User:Hanzo Hasashi|Hanzo Hasashi]] ([[User talk:Hanzo Hasashi|talk]]) 21:51, 14 August 2022 (UTC)
@@ -6586,7 +6587,7 @@ I figured the only relevant part of this is the quote that's already in the intr
 ***Looks better. Can we reword one of the two "Domina insisted" though, for more variation? [[User:Xd1358|<span style="color:#336600;font-weight:bold;">1358</span>]] [[User_talk:Xd1358|<sup style="color:#336600;">(Talk)</sup>]] 07:37, 1 June 2022 (UTC)
 ****I changed the second one to "Domina further asserted". -- [[User:YakovChaimTzvi|YakovChaimTzvi]] <small>(he/him/his)</small> [[File:ChissAscendancyCanonSymbol.svg|20px|linkWP:Chiss]] ([[User_talk:YakovChaimTzvi|talk]]) 23:10, 3 June 2022 (UTC)
 *Review note: quote attributions should generally be in present tense. [[User:Xd1358|<span style="color:#336600;font-weight:bold;">1358</span>]] [[User_talk:Xd1358|<sup style="color:#336600;">(Talk)</sup>]] 17:50, 19 May 2022 (UTC)
-**Okay 👍🏼 -- [[User:YakovChaimTzvi|YakovChaimTzvi]] <small>(he/him/his)</small> [[File:ChissAscendancyCanonSymbol.svg|20px|linkWP:Chiss]] ([[User_talk:YakovChaimTzvi|talk]]) 16:26, 23 May 2022 (UTC)
+**Okay -- [[User:YakovChaimTzvi|YakovChaimTzvi]] <small>(he/him/his)</small> [[File:ChissAscendancyCanonSymbol.svg|20px|linkWP:Chiss]] ([[User_talk:YakovChaimTzvi|talk]]) 16:26, 23 May 2022 (UTC)
 *Review note: I removed the link to [[treason]] because that article discusses the legal concept of treason (i.e. against a government) rather than the general act of betraying someone. [[User:Xd1358|<span style="color:#336600;font-weight:bold;">1358</span>]] [[User_talk:Xd1358|<sup style="color:#336600;">(Talk)</sup>]] 10:17, 8 October 2022 (UTC)
 
 =====Macaroni=====
@@ -6604,7 +6605,7 @@ I figured the only relevant part of this is the quote that's already in the intr
 *<s>''[[Thrawn: Alliances]]'' does not say that [[Cortosis]] is a [[Metal]]. -[[User:ThrawnChiss7|ThrawnChiss7]] ([[User talk:ThrawnChiss7|talk]]) 20:44, 23 June 2022 (UTC)</s>
 **replying on Yakov's behalf -- Padme calls it a metal in Alliances. [[User:SkywalkerZIARA|skywalkerZIARA]] ([[User talk:SkywalkerZIARA|talk]]) 21:30, 2 July 2022 (UTC)
 ***<s>Where? (I have Alliances, and couldn't find it)</s> -[[User:ThrawnChiss7|ThrawnChiss7]] ([[User talk:ThrawnChiss7|talk]]) 19:09, 21 July 2022 (UTC)
-****Amidala talking about cortosis: ''"What do they bring in from the mine? Some sort of heavy, grayish metal?”'' '''[[User:Samonic|<font style="color:#bd730b;">'''Samonic'''</font>]]''' [[File:ChissAscendancyCanonSymbol.svg|20px]] 09:27, 23 July 2022 (UTC)
+****Amidala talking about cortosis: ''"What do they bring in from the mine? Some sort of heavy, grayish metal?'' '''[[User:Samonic|<font style="color:#bd730b;">'''Samonic'''</font>]]''' [[File:ChissAscendancyCanonSymbol.svg|20px]] 09:27, 23 July 2022 (UTC)
 
 =====Kilji blade=====
 *<s>I believe adding context for the [[Galactic Civil War]] would be beneficial. (combatants)</s>
@@ -6683,15 +6684,15 @@ I figured the only relevant part of this is the quote that's already in the intr
 {{ACapproved|02:12, 30 September 2022 (UTC)}}
 [[Category:Archived nominations by User:Ayrehead02|{{SUBPAGENAME}}]]
 </div>
-[[Wookieepedia:Good article nominations/Theomet Danlé]]
+[[Wookieepedia:Good article nominations/Theomet Danl]]
 <div id="old-forum-warning" class="boilerplate metadata rfa" style="background-color: #F4F4F4; margin: 2em 0 0 0; padding: 0 10px 0 10px; border: 1px solid #AAAAAA;">
 :''The following discussion is preserved as an archive of a [[Wookieepedia:Good articles|Good article nomination]] that was '''successful'''. <span style="color: red;">'''Please do not modify it.'''</span>[[Category:Wookieepedia Good article nomination pages archive|{{SUBPAGENAME}}]]
-==[[{{#titleparts:Wookieepedia:Good article nominations/Theomet Danlé||2}}]]==
+==[[{{#titleparts:Wookieepedia:Good article nominations/Theomet Danl||2}}]]==
 *'''Nominated by''': [[User:Ayrehead02|Ayrehead02]] ([[User talk:Ayrehead02|talk]]) 09:34, 30 May 2022 (UTC)
 *'''Nomination comments''': Since they've announced a Jabba's Palace comic I'll hold off on my planned ROTJ series of nominations for now, so time for some more Prequels goodness.
 *'''WookieeProject (optional)''': 
 
-{{GANvotes|Wookieepedia:Good article nominations/Theomet Danlé|1}}
+{{GANvotes|Wookieepedia:Good article nominations/Theomet Danl|1}}
 ====Support====
 #[[User:Braha'tok enthusiast|<span style="color:#0047ab; font-family:Trebuchet MS;">Braha'tok enthusiast</span>]] <sup>[[User talk:Braha'tok enthusiast|<span style="color:#0047ab; font-family:Trebuchet MS;">Hello there</span>]]</sup> 08:49, 3 June 2022 (UTC)
 # '''[[User:Samonic|<font style="color:#bd730b;">'''Samonic'''</font>]]''' [[File:ChissAscendancyCanonSymbol.svg|20px]] 19:02, 14 June 2022 (UTC)
@@ -7834,7 +7835,7 @@ I figured the only relevant part of this is the quote that's already in the intr
 **Done 
 *<s>I'd like to see some context for Darth Vader upon his first mention in "Description"</s>
 **Done
-*<s>"He also that he had little time to write…" is something missing in this sentence?</s>
+*<s>"He also that he had little time to write" is something missing in this sentence?</s>
 **Fixed
 *<s>The intro could use a paragraph break.
 *Please give a look at [https://starwars.fandom.com/wiki/Vader%27s_diary?type=revision&diff=11231119&oldid=11185568 my edits].</s> [[User:LucaRoR|<span style="color: blue; text-shadow:#0066ff 0.2em 0.2em 0.4em">'''LucaRoR'''</span>]] [[File:Sigil of House Serenno.png|18px]] <sup> ([[User talk:LucaRoR|<b style="color: black">'''Talk'''</b>]])</sup> 07:52, 27 January 2022 (UTC)

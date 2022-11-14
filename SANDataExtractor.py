@@ -10,11 +10,22 @@ isSupportSection = False
 isOpposeSection = False
 separator = "# "
 
-patternArticle = "^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$"
+sourceFile = "fa_nom_archive_2022.txt"
+resultsFile = "result.txt"
+patternArticle = ("(^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$" +
+  "|^\[\[Wookieepedia:Good article nominations/.*\]\]$" +
+  "|^\[\[Wookieepedia:Featured article nominations/.*\]\]$)"
+)
 patternResult = (
-  "^:''The following discussion is preserved as an archive " +
+  "(^:''The following discussion is preserved as an archive " +
   "of a \[\[Wookieepedia:Comprehensive article nominations\|Comprehensive " +
-  "article nomination\]\] that was '''.*'''."
+  "article nomination\]\] that was '''.*'''." +
+  "|^:''The following discussion is preserved as an archive of a " +
+  "\[\[Wookieepedia:Good articles\|Good article nomination\]\] " +
+  "that was '''.*'''." +
+  "|^:''The following discussion is preserved as an archive of a " +
+  "\[\[Wookieepedia:Featured article nominations\|Featured article nomination\]\]" +
+  " that was '''.*'''.)"
 )
 patternNominator = "^\*'''Nominated by''':.*$"
 patternWPs = "^\*'''WookieeProject \(optional\)''':.*$"
@@ -114,7 +125,7 @@ WPlist = [["Wookieepedia:WookieeProject Aliens",
 "WP:Women"]
 ]
 
-f = open("ca_nom_archive_2022.txt", "r")
+f = open(sourceFile, "r")
 for x in f:
 
   # process nom article title
@@ -125,7 +136,12 @@ for x in f:
     currentNom.objectors = []
     currentNom.enddate = ""
     currentNom.article = re.sub(
-      "(^\[\[Wookieepedia:Comprehensive article nominations/|\]\])",
+      (
+        "(^\[\[Wookieepedia:Comprehensive article nominations/" +
+        "|^\[\[Wookieepedia:Good article nominations/" +
+        "|^\[\[Wookieepedia:Featured article nominations/" +
+        "|\]\])"
+      ),
       "",
       x
     ).strip()
@@ -136,11 +152,33 @@ for x in f:
   elif re.search(patternResult, x):
     currentNom.result = re.sub(
       (
-        "(^:''The following discussion is preserved as an archive of a " +
+        "(" +
+        "^:''The following discussion is preserved as an archive of a " +
         "\[\[Wookieepedia:Comprehensive article nominations\|Comprehensive " +
-        "article nomination\]\] that was '''|'''\. <span style=\"color: red;\">" +
-        "'''Please do not modify it.'''</span>\[\[Category:Wookieepedia " +
-        "Comprehensive article nomination pages archive\|\{\{SUBPAGENAME\}\}\]\])"
+        "article nomination\]\] that was '''" +
+        "|'''\. <span style=\"color: red;\">" +
+        "'''Please do not modify it.'''<\/span>\[\[Category:Wookieepedia " +
+        "Comprehensive article nomination pages archive\|\{\{SUBPAGENAME\}\}\]\]" +
+        "|^:''The following discussion is preserved as an archive of a " +
+        "\[\[Wookieepedia:Good article nominations\|Good " +
+        "article nomination\]\] that was '''" +
+        "|^:''The following discussion is preserved as an archive of a " +
+        "\[\[Wookieepedia:Good articles\|Good " +
+        "article nomination\]\] that was '''" +
+        "|'''\. <span style=\"color: red;\">" +
+        "'''Please do not modify it.'''<\/span>\[\[Category:Wookieepedia " +
+        "Good article nomination pages archive\|\{\{SUBPAGENAME\}\}\]\]" +
+        "|^:''The following discussion is preserved as an archive of a " +
+        "\[\[Wookieepedia:Featured article nominations\|Featured " +
+        "article nomination\]\] that was '''" +
+        "|'''\. <span style=\"color: red;\">" +
+        "'''Please do not modify it.'''<\/span>\[\[Category:Wookieepedia " +
+        "Featured article nomination pages archive\|\{\{SUBPAGENAME\}\}\]\]" +
+        "|'''. <span style=\"color: red;\">" +
+        "'''Please do not modify it.'''<\/span>\{\{SpecialCategorizer\|" +
+        "\[\[Category:Wookieepedia Featured article nomination pages archive" +
+        "\|\{\{SUBPAGENAME\}\}\]\]\}\}"
+        ")"
       ),
       "",
       x
@@ -207,7 +245,7 @@ for x in f:
         pass
 
       # omit non-vote comments
-      if re.search("^#\*", x):
+      if re.search("^#(\*|:)", x):
         pass
 
       # fetch and save review panel vote tag if present
@@ -233,12 +271,10 @@ for x in f:
     while 2 * spreadsheetConstant > len(currentNom.votes):
         currentNom.votes.append("")
 
-    currentNom.objectors = []
-    #PROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEMPROBLEM
-    #print(currentNom.objectors)
-
 
   # process usernames in objections
+
+    currentNom.objectors = []
 
   elif re.search("\[\[User:", x):
     if isOpposeSection:
@@ -285,7 +321,7 @@ f.close()
 
 # output the nomination data as a txt (csv) file
 
-f = open("result.txt", "a")
+f = open(resultsFile, "a")
 
 for x in noms:
     f.write(

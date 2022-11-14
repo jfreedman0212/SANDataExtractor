@@ -247,9 +247,17 @@ for x in f:
       currentNom.objectors.append(name)
 
 
-  # wrap up with usernames in objections and process nom end date
+  # process nom end date
 
   elif re.search(patternEnddate, x):
+    # fetch and save the nom end date
+    endDate = re.sub("(^.*approved\|| \(UTC\)|\}\})", "", x).strip()
+    currentNom.enddate = re.sub(",", "#", endDate)
+
+  
+  #wrap up with usernames in objections
+
+  elif re.search(patternNomEnd, x):
     isOpposeSection = False
 
     # remove duplicate usernames and
@@ -270,11 +278,6 @@ for x in f:
     while spreadsheetConstant > len(currentNom.objectors):
         currentNom.objectors.append("")
 
-    # fetch and save the nom end date
-    endDate = re.sub("(^.*approved\|| \(UTC\)|\}\})", "", x).strip()
-    currentNom.enddate = re.sub(",", "#", endDate)
-
-  elif re.search(patternNomEnd, x):
     # save the data about the current nom
     noms.append(copy.deepcopy(currentNom))
 f.close()

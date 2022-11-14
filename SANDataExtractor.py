@@ -8,6 +8,7 @@ noms = []
 spreadsheetConstant = 30
 isSupportSection = False
 isOpposeSection = False
+separator = "# "
 
 patternArticle = "^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$"
 patternResult = (
@@ -86,12 +87,14 @@ for x in f:
       (
         "(^:''The following discussion is preserved as an archive of a " +
         "\[\[Wookieepedia:Comprehensive article nominations\|Comprehensive " +
-        "article nomination\]\] that was '''|\.|''')"
+        "article nomination\]\] that was '''|'''\. <span style=\"color: red;\">" +
+        "'''Please do not modify it.'''</span>\[\[Category:Wookieepedia " +
+        "Comprehensive article nomination pages archive\|\{\{SUBPAGENAME\}\}\]\])"
       ),
       "",
       x
     ).strip()
-
+    print(currentNom.result)
 
   # process nominator name and nom start date
 
@@ -214,7 +217,8 @@ for x in f:
         currentNom.objectors.append("")
 
     # fetch and save the nom end date
-    currentNom.enddate = re.sub("(^.*approved\|| \(UTC\)|\}\})", "", x).strip()
+    endDate = re.sub("(^.*approved\|| \(UTC\)|\}\})", "", x).strip()
+    currentNom.enddate = re.sub(",", "#", endDate)
 
     # save the data about the current nom
     noms.append(copy.deepcopy(currentNom))
@@ -223,7 +227,6 @@ f.close()
 
 # output the nomination data as a txt (csv) file
 
-separator = "# "
 f = open("result.txt", "a")
 
 for x in noms:

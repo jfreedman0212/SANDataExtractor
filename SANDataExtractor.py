@@ -10,7 +10,7 @@ isSupportSection = False
 isOpposeSection = False
 separator = "# "
 
-sourceFile = "fa_nom_archive_2022.txt"
+sourceFile = "ca_nom_archive_2022.txt"
 resultsFile = "result.txt"
 patternArticle = ("(^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$" +
   "|^\[\[Wookieepedia:Good article nominations/.*\]\]$" +
@@ -283,18 +283,22 @@ for x in f:
       currentNom.objectors.append(name)
 
 
-  # process nom end date
+  # fetch nom end date
 
   elif re.search(patternEnddate, x):
-    # fetch and save the nom end date
-    endDate = re.sub("(^.*approved\|| \(UTC\)|\}\})", "", x).strip()
-    currentNom.enddate = re.sub(",", "#", endDate)
+    currentNom.enddate = re.sub("(^.*approved\|| \(UTC\)|\}\})", "", x).strip()
 
-  
+
   #wrap up with usernames in objections
 
-  elif re.search(patternNomEnd, x):
+  elif re.search(patternNomEnd, x):  
     isOpposeSection = False
+
+    # save nom end date
+    if currentNom.enddate:
+      currentNom.enddate = re.sub(",", "#", currentNom.enddate)
+    else:
+      currentNom.enddate = "#"
 
     # remove duplicate usernames and
     # sort the list of usernames mentioned in objections alphabetically
@@ -325,14 +329,16 @@ f = open(resultsFile, "a")
 
 for x in noms:
     f.write(
-      x.article + separator +
-      x.result + separator +
       x.nominator + separator +
+      x.article + separator +
+      "" + separator + # continuity
+      "" + separator + # status type
+      x.result + separator +
       x.startdate + separator +
+      x.enddate + separator +
       "; ".join(x.WPs) + separator +
       "# ".join(x.votes) + separator +
-      "# ".join(x.objectors) + separator +
-      x.enddate + "\n"
+      "# ".join(x.objectors) + "\n"
     )
 
 f.close()

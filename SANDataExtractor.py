@@ -128,13 +128,23 @@ WPlist = [["Wookieepedia:WookieeProject Aliens",
 f = open(sourceFile, "r")
 for x in f:
 
-  # process nom article title
+  # process nom SA process type and article title
 
   if re.search(patternArticle, x):
     currentNom = Nom()
     currentNom.WPs = []
     currentNom.objectors = []
     currentNom.enddate = ""
+
+    # process nom SA process type 
+    if re.search("Wookieepedia:Comprehensive article nominations", x):
+      currentNom.process = "CAN"
+    elif re.search("Wookieepedia:Good article nominations", x):
+      currentNom.process = "GAN"
+    else:
+      currentNom.process = "FAN"
+
+    # process article title 
     currentNom.article = re.sub(
       (
         "(^\[\[Wookieepedia:Comprehensive article nominations/" +
@@ -332,7 +342,7 @@ for x in noms:
       x.nominator + separator +
       x.article + separator +
       "" + separator + # continuity
-      "" + separator + # status type
+      x.process + separator +
       x.result + separator +
       x.startdate + separator +
       x.enddate + separator +

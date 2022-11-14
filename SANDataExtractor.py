@@ -206,6 +206,10 @@ for x in f:
       if re.search("^#:<s>", x):
         pass
 
+      # omit non-vote comments
+      if re.search("^#\*", x):
+        pass
+
       # fetch and save review panel vote tag if present
       else:
         if re.search("^#(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x):
@@ -216,8 +220,7 @@ for x in f:
           currentNom.votes.append("")
         
         # fetch and save username from vote
-        #namePart = re.findall("\[\[User:.*\|", x)[0]
-        namePart = "[[User:Manoof|"
+        namePart = re.findall("\[\[User:.*\|", x)[0]
         name = re.sub("(\[\[User:|\|.*)", "", namePart)
         currentNom.votes.append(name)
 

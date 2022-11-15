@@ -284,13 +284,17 @@ for x in f:
         name = re.sub("(\[\[User:|\|.*)", "", namePart)
         currentNom.votes.append(name)
 
+        # fetch and save year from vote
+        yearVote = re.findall("\d\d\d\d", x)[-1]
+        currentNom.votes.append(yearVote)
+
   # wrap up with support votes
   elif re.search(patternObjectors, x):
     isSupportSection = False
     isOpposeSection = True
 
     # pad the list with empty entries
-    while 2 * spreadsheetConstant > len(currentNom.votes):
+    while 3 * spreadsheetConstant > len(currentNom.votes):
         currentNom.votes.append("")
 
 

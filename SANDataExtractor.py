@@ -204,12 +204,28 @@ for x in f:
   # process nominator name and nom start date
 
   elif re.search(patternNominator, x):
-    # process nominator
+    # get the user input part of the nominator field
     string = re.sub("^\*'''Nominated by''':[^\[]*", "", x).strip()
-    # the following ignores co-nominators for now!
-    namePart = re.findall("\[\[User:.*", string)[0]
-    name = re.sub("(\[\[User:|\|.*|\]\].*)", "", namePart)
-    currentNom.nominator = name
+
+    # get a list of usernames linked in there
+    userPages = re.findall("\[\[User:[^\]\|\/]*", string)
+
+    # remove any duplicates
+    userPages = list(dict.fromkeys(userPages))
+
+    # trim the User: prefix
+    i = 0
+    while i < len(userPages):
+      userPages[i] = re.sub("\[\[User:", "", userPages[i])
+      i = i + 1
+    
+    userPages.sort()
+
+    # concatenate co-nominator usernames
+    if len(userPages) > 1:
+      currentNom.nominator = ", ".join(userPages)
+    else:
+      currentNom.nominator = userPages[0]
 
     # process start date
     datePart = re.findall(

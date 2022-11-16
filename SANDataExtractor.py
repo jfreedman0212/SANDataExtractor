@@ -284,11 +284,18 @@ for x in f:
         # fetch and save username from vote
         namePart = re.findall("\[\[User:.*\|", x)[0]
         name = re.sub("(\[\[User:|\|.*)", "", namePart)
-        currentNom.votes.append(name)
 
-        # fetch and save year from vote
-        yearVote = re.findall("\d\d\d\d", x)[-1]
-        currentNom.votes.append(yearVote)
+        # check for any duplicate votes
+        if name in currentNom.votes:
+          # in case of duplicate vote,
+          # remove the already-added panel tag or the space for it
+          currentNom.votes.pop(-1)
+        else:
+          currentNom.votes.append(name)
+
+          # fetch and save year from vote
+          yearVote = re.findall("\d\d\d\d", x)[-1]
+          currentNom.votes.append(yearVote)
 
   # wrap up with support votes
   elif re.search(patternObjectors, x):

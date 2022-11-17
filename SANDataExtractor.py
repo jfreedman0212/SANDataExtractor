@@ -288,8 +288,8 @@ for x in f:
       if re.search("^#(\*|:)", x):
         pass
 
-      # fetch and save review panel vote tag if present
       else:
+        # fetch and save review panel vote tag if present
         if re.search("^#(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x):
           currentNom.votes.append(
             re.findall("^#(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x)[0]
@@ -297,21 +297,35 @@ for x in f:
         else:
           currentNom.votes.append("")
         
-        # fetch and save username from vote
-        namePart = re.findall("\[\[User:.*\|", x)[0]
-        name = re.sub("(\[\[User:|\|.*)", "", namePart)
+        # fetch and save usernames present on the vote line
+        userPages = re.findall("\[\[User:[^\]\|\/]*", x)
 
-        # check for any duplicate votes
-        if name in currentNom.votes:
-          # in case of duplicate vote,
-          # remove the already-added panel tag or the space for it
-          currentNom.votes.pop(-1)
+        # remove any duplicates
+        userPages = list(dict.fromkeys(userPages))
+
+        # trim the User: prefix
+        i = 0
+        while i < len(userPages):
+          userPages[i] = re.sub("\[\[User:", "", userPages[i])
+          i = i + 1
+          
+        userPages.sort()
+
+        if len(userPages) > 1:
+          # concatenate the usernames without checking for any duplicate votes
+          currentNom.votes.append(", ".join(userPages))
         else:
-          currentNom.votes.append(name)
+          # check for any duplicate votes
+          if userPages[0] in currentNom.votes:
+            # in case of duplicate vote,
+            # remove the already-added panel tag field
+            currentNom.votes.pop(-1)
+          else:
+            currentNom.votes.append(userPages[0])
 
-          # fetch and save year from vote
-          yearVote = re.findall("\d\d\d\d", x)[-1]
-          currentNom.votes.append(yearVote)
+        # fetch and save the last year present on the vote line
+        yearVote = re.findall("\d\d\d\d", x)[-1]
+        currentNom.votes.append(yearVote)
 
   # wrap up with support votes
   elif re.search(patternObjectors, x):

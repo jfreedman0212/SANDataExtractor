@@ -38,7 +38,7 @@ patternWPs = "^\*'''WookieeProject \(optional\)''':.*$"
 patternVotes = "^====Support====.*$"
 patternComments = "^====Comments====.*$"
 patternObjectors = "^====Object====.*$"
-patternEnddate = "^\{\{.*approved\|.*$"
+patternEnddate = "^\**\{\{.*approved\|.*$"
 patternNomEnd = "\[\[Category:Archived nominations by "
 WPlist = [["Wookieepedia:WookieeProject Aliens",
 "WP:ALIENS",
@@ -131,7 +131,7 @@ WPlist = [["Wookieepedia:WookieeProject Aliens",
 "WP:Women"]
 ]
 
-f = open(sourceFile, "r")
+f = open(sourceFile, "r", encoding="utf8")
 for x in f:
 
   # process nom SA process type and article title
@@ -398,7 +398,7 @@ f.close()
 
 # output the nomination data as a txt (csv) file
 
-f = open(resultsFile, "a")
+f = open(resultsFile, "a", encoding="utf8")
 
 for x in noms:
     f.write(

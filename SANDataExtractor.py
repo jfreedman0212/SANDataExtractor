@@ -263,7 +263,10 @@ for x in f:
     # and check if any of their names or redirects match the WP field
     for WookieeProject in WPlist:
       for WPname in WookieeProject:
-        if re.search(WPname.upper() + "[^a-zA-Z0-9]", WPfield):
+        # prevent, e.g., "WP:NSW" being a match for "WP:N"
+        # while at the same time allow for, e.g.,
+        # "WP:AST" (unbracketed) at the end of the line
+        if re.search(WPname.upper() + "($|[^a-zA-Z0-9])", WPfield):
           currentNom.WPs.append(
             re.sub("Wookieepedia:WookieeProject ", "", WookieeProject[0])
           )

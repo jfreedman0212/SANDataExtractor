@@ -15,7 +15,7 @@ sourceFile = "ca_nom_archive_2022.txt"
 resultsFile = "result.txt"
 wikiDate = (
   "\d+ (?:January|February|March|April|May|June|" +
-  "July|August|September|October|November|December) \d\d\d\d"
+  "July|August|September|October|November|December),? \d\d\d\d"
 )
 patternArticle = (
   "(^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$" +
@@ -311,10 +311,10 @@ for x in f:
 
   elif re.search(patternNominator, x):
     # get the user input part of the nominator field
-    string = re.sub("^\*'''Nominated by''':[^\[]*", "", x).strip()
+    inputPart = re.sub("^\*'''Nominated by''':[^\[]*", "", x).strip()
 
     # get a list of usernames linked in there
-    userPages = re.findall("\[\[User:[^\]\|\/]*", string)
+    userPages = re.findall("\[\[User:[^\]\|\/]*", inputPart)
 
     # remove any duplicates
     userPages = list(dict.fromkeys(userPages))
@@ -334,21 +334,23 @@ for x in f:
       currentNom.nominator = userPages[0]
 
     # process start date
-    datePart = re.findall(
+    timestamp = re.findall(
       (
         "\d\d:\d\d, " + wikiDate + " \(UTC\)"
       ),
-      string
+      inputPart
     )[0]
 
-    dateTime = re.sub(" \(UTC\)", "", datePart)
-    dateTime = re.sub(",", "#", dateTime)
+    dateTime = re.sub(" \(UTC\)", "", timestamp)
+    date = re.findall(wikiDate, dateTime)[0]
 
     # process date to the format used in spreadsheet
-    date = re.findall(wikiDate, dateTime)[0]
-    dateObject = datetime.strptime(date, "%d %B %Y")
+    dateSansComma = re.sub(",", "", date)
+    dateObject = datetime.strptime(dateSansComma, "%d %B %Y")
     dateFinal = dateObject.strftime('%Y-%m-%d')
+
     dateTime = re.sub(date, "'" + dateFinal, dateTime)
+    dateTime = re.sub(",", "#", dateTime)
 
     currentNom.startdate = dateTime
 
@@ -468,15 +470,20 @@ for x in f:
   elif re.search(patternNomEnd, x):  
     isOpposeSection = False
 
-    # save nom end date
+    # save end date if nom has been successful
     if currentNom.enddate:
-      dateTime = re.sub(",", "#", currentNom.enddate)
+      # extract date from timestamp
+      dateActual = re.findall(wikiDate, currentNom.enddate)[0]
+
+      # remove commas, such as between month and year
+      dateActual = re.sub(",", "", dateActual)
 
       # process date to the format used in spreadsheet
-      date = re.findall(wikiDate, dateTime)[0]
-      dateObject = datetime.strptime(date, "%d %B %Y")
+      dateObject = datetime.strptime(dateActual, "%d %B %Y")
       dateFinal = dateObject.strftime('%Y-%m-%d')
-      dateTime = re.sub(date, "'" + dateFinal, dateTime)
+
+      dateTime = re.sub(dateActual, "'" + dateFinal, currentNom.enddate)
+      dateTime = re.sub(",", "#", dateTime)
 
       currentNom.enddate = dateTime
     else:

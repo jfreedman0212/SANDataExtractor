@@ -334,25 +334,58 @@ for x in f:
       currentNom.nominator = userPages[0]
 
     # process start date
-    timestamp = re.findall(
-      (
-        "\d\d:\d\d, " + wikiDate + " \(UTC\)"
-      ),
-      inputPart
-    )[0]
+    try:
+      timestamp = re.findall(
+        (
+          "\d\d:\d\d, " + wikiDate + " \(UTC\)"
+        ),
+        inputPart
+      )[0]
 
-    dateTime = re.sub(" \(UTC\)", "", timestamp)
-    date = re.findall(wikiDate, dateTime)[0]
+      dateTime = re.sub(" \(UTC\)", "", timestamp)
+      date = re.findall(wikiDate, dateTime)[0]
 
-    # process date to the format used in spreadsheet
-    dateSansComma = re.sub(",", "", date)
-    dateObject = datetime.strptime(dateSansComma, "%d %B %Y")
-    dateFinal = dateObject.strftime('%Y-%m-%d')
+      # process date to the format used in spreadsheet
+      dateSansComma = re.sub(",", "", date)
+      dateObject = datetime.strptime(dateSansComma, "%d %B %Y")
+      dateFinal = dateObject.strftime('%Y-%m-%d')
 
-    dateTime = re.sub(date, "'" + dateFinal, dateTime)
-    dateTime = re.sub(",", "#", dateTime)
+      dateTime = re.sub(date, "'" + dateFinal, dateTime)
+      dateTime = re.sub(",", "#", dateTime)
 
-    currentNom.startdate = dateTime
+      currentNom.startdate = dateTime
+
+    except:
+      print(
+        "Error in fetching date from byline signature on " +
+        "nomination: " +
+        currentNom.article
+      )
+
+      wikiDateTemp = (
+        "(?:January|February|March|April|May|June|" +
+        "July|August|September|October|November|December) \d+,? \d\d\d\d"
+      )
+      
+      timestamp = re.findall(
+        (
+          "\d\d:\d\d, " + wikiDateTemp + " \(UTC\)"
+        ),
+        inputPart
+      )[0]
+
+      dateTime = re.sub(" \(UTC\)", "", timestamp)
+      date = re.findall(wikiDateTemp, dateTime)[0]
+
+      # process date to the format used in spreadsheet
+      dateSansComma = re.sub(",", "", date)
+      dateObject = datetime.strptime(dateSansComma, "%B %d %Y")
+      dateFinal = dateObject.strftime('%Y-%m-%d')
+
+      dateTime = re.sub(date, "'" + dateFinal, dateTime)
+      dateTime = re.sub(",", "#", dateTime)
+
+      currentNom.startdate = dateTime
 
 
   # process WPs
@@ -435,7 +468,15 @@ for x in f:
             currentNom.votes.append(userPages[0])
 
         # fetch and save the last year present on the vote line
-        yearVote = re.findall("\d\d\d\d", x)[-1]
+        try:
+          yearVote = re.findall("\d\d\d\d", x)[-1]
+        except:
+          print(
+            "Error in fetching year from support vote signature on " +
+            "nomination: " +
+            currentNom.article
+          )
+          yearVote = ""
         currentNom.votes.append(yearVote)
 
   # wrap up with support votes

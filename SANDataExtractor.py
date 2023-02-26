@@ -9,6 +9,7 @@ noms = []
 spreadsheetConstant = 30
 isSupportSection = False
 isOpposeSection = False
+inNomination = False
 separator = "# "
 
 sourceFile = "ca_nom_archive_2022.txt"
@@ -244,6 +245,7 @@ for x in f:
 
   if re.search(patternArticle, x):
     currentNom = Nom()
+    inNomination = True
     currentNom.WPs = []
     currentNom.objectors = []
     currentNom.enddate = ""
@@ -311,27 +313,40 @@ for x in f:
 
   elif re.search(patternNominator, x):
     # get the user input part of the nominator field
-    inputPart = re.sub("^\*'''Nominated by''':[^\[]*", "", x).strip()
-
-    # get a list of usernames linked in there
-    userPages = re.findall("\[\[User:[^\]\|\/]*", inputPart)
-
-    # remove any duplicates
-    userPages = list(dict.fromkeys(userPages))
-
-    # trim the User: prefix
-    i = 0
-    while i < len(userPages):
-      userPages[i] = re.sub("\[\[User:", "", userPages[i])
-      i = i + 1
-    
-    userPages.sort()
-
-    # concatenate co-nominator usernames
-    if len(userPages) > 1:
-      currentNom.nominator = ", ".join(userPages)
+    # if it contains a link to a userpage
+    if re.search("\[\[User:[^\]\|\/]*", x):
+      inputPart = re.sub("^\*'''Nominated by''':[^\[]*", "", x).strip()
+    # if it doesn't
     else:
-      currentNom.nominator = userPages[0]
+      inputPart = re.sub("^\*'''Nominated by''': *", "", x).strip()
+
+    try:
+      # get a list of usernames linked in there
+      userPages = re.findall("\[\[User:[^\]\|\/]*", inputPart)
+
+      # remove any duplicates
+      userPages = list(dict.fromkeys(userPages))
+
+      # trim the User: prefix
+      i = 0
+      while i < len(userPages):
+        userPages[i] = re.sub("\[\[User:", "", userPages[i])
+        i = i + 1
+      
+      userPages.sort()
+
+      # concatenate co-nominator usernames
+      if len(userPages) > 1:
+        currentNom.nominator = ", ".join(userPages)
+      else:
+        currentNom.nominator = userPages[0]
+    except:
+      print(
+        "Error in fetching username from byline signature on " +
+        "nomination: " +
+        currentNom.article
+      )
+      currentNom.nominator = inputPart
 
     # process start date
     try:
@@ -511,45 +526,47 @@ for x in f:
   elif re.search(patternNomEnd, x):  
     isOpposeSection = False
 
-    # save end date if nom has been successful
-    if currentNom.enddate:
-      # extract date from timestamp
-      dateActual = re.findall(wikiDate, currentNom.enddate)[0]
+    if inNomination == True:
+      # save end date if nom has been successful
+      if currentNom.enddate:
+        # extract date from timestamp
+        dateActual = re.findall(wikiDate, currentNom.enddate)[0]
 
-      # remove commas, such as between month and year
-      dateActual = re.sub(",", "", dateActual)
+        # remove commas, such as between month and year
+        dateActual = re.sub(",", "", dateActual)
 
-      # process date to the format used in spreadsheet
-      dateObject = datetime.strptime(dateActual, "%d %B %Y")
-      dateFinal = dateObject.strftime('%Y-%m-%d')
+        # process date to the format used in spreadsheet
+        dateObject = datetime.strptime(dateActual, "%d %B %Y")
+        dateFinal = dateObject.strftime('%Y-%m-%d')
 
-      dateTime = re.sub(dateActual, "'" + dateFinal, currentNom.enddate)
-      dateTime = re.sub(",", "#", dateTime)
+        dateTime = re.sub(dateActual, "'" + dateFinal, currentNom.enddate)
+        dateTime = re.sub(",", "#", dateTime)
 
-      currentNom.enddate = dateTime
-    else:
-      currentNom.enddate = "#"
+        currentNom.enddate = dateTime
+      else:
+        currentNom.enddate = "#"
 
-    # remove duplicate usernames and
-    # sort the list of usernames mentioned in objections alphabetically
-    currentNom.objectors = list(dict.fromkeys(currentNom.objectors))
-    currentNom.objectors.sort()
+      # remove duplicate usernames and
+      # sort the list of usernames mentioned in objections alphabetically
+      currentNom.objectors = list(dict.fromkeys(currentNom.objectors))
+      currentNom.objectors.sort()
 
-    # remove nominator from the above list
-    if currentNom.nominator in currentNom.objectors:
-      currentNom.objectors.remove(currentNom.nominator)
+      # remove nominator from the above list
+      if currentNom.nominator in currentNom.objectors:
+        currentNom.objectors.remove(currentNom.nominator)
 
-    # remove support voter names from the list
-    for y in currentNom.votes:
-      if y in currentNom.objectors:
-        currentNom.objectors.remove(y)
+      # remove support voter names from the list
+      for y in currentNom.votes:
+        if y in currentNom.objectors:
+          currentNom.objectors.remove(y)
 
-    # pad the list with empty entries
-    while spreadsheetConstant > len(currentNom.objectors):
-        currentNom.objectors.append("")
+      # pad the list with empty entries
+      while spreadsheetConstant > len(currentNom.objectors):
+          currentNom.objectors.append("")
 
-    # save the data about the current nom
-    noms.append(copy.deepcopy(currentNom))
+      # save the data about the current nom
+      noms.append(copy.deepcopy(currentNom))
+      inNomination = False
 f.close()
 
 

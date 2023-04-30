@@ -12,7 +12,7 @@ isOpposeSection = False
 inNomination = False
 separator = "# "
 
-sourceFile = "ca_nom_archive_2022.txt"
+sourceFile = "ca_noms.txt"
 resultsFile = "result.txt"
 wikiDate = (
   "\d+ (?:January|February|March|April|May|June|" +
@@ -35,6 +35,7 @@ patternResult = (
   " that was '''.*'''.)"
 )
 patternNominator = "^\*'''Nominated by''':.*$"
+patternArchivalDate = "^\*'''Date Archived''':.*$"
 patternWPs = "^\*'''WookieeProject \(optional\)''':.*$"
 patternVotes = "^====Support====.*$"
 patternComments = "^====Comments====.*$"
@@ -343,7 +344,8 @@ for x in f:
     except:
       print(
         "Error in fetching username from byline signature on " +
-        "nomination: " +
+        currentNom.process +
+        ": " +
         currentNom.article
       )
       currentNom.nominator = inputPart
@@ -352,12 +354,12 @@ for x in f:
     try:
       timestamp = re.findall(
         (
-          "\d\d:\d\d, " + wikiDate + " \(UTC\)"
+          "\d\d:\d\d, " + wikiDate + "[^0-9]*\(UTC\)"
         ),
         inputPart
       )[0]
 
-      dateTime = re.sub(" \(UTC\)", "", timestamp)
+      dateTime = re.sub("[^0-9]*\(UTC\)", "", timestamp)
       date = re.findall(wikiDate, dateTime)[0]
 
       # process date to the format used in spreadsheet
@@ -373,7 +375,8 @@ for x in f:
     except:
       print(
         "Error in fetching date from byline signature on " +
-        "nomination: " +
+        currentNom.process +
+        ": " +
         currentNom.article
       )
 
@@ -384,12 +387,12 @@ for x in f:
       
       timestamp = re.findall(
         (
-          "\d\d:\d\d, " + wikiDateTemp + " \(UTC\)"
+          "\d\d:\d\d, " + wikiDateTemp + "[^0-9]*\(UTC\)"
         ),
         inputPart
       )[0]
 
-      dateTime = re.sub(" \(UTC\)", "", timestamp)
+      dateTime = re.sub("[^0-9]*\(UTC\)", "", timestamp)
       date = re.findall(wikiDateTemp, dateTime)[0]
 
       # process date to the format used in spreadsheet
@@ -403,6 +406,16 @@ for x in f:
       currentNom.startdate = dateTime
 
 
+  # process archival date if present
+
+  elif re.search(patternArchivalDate, x):
+    currentNom.enddate = re.sub("^\*'''Date Archived''': ", "", x).strip()
+    currentNom.enddate = re.findall(
+      "\d\d:\d\d, \d+ " +
+      "(?:January|February|March|April|May|June|July|August|September|October|November|December),? \d\d\d\d",
+      currentNom.enddate
+    )[0]
+  
   # process WPs
 
   elif re.search(patternWPs, x):
@@ -488,7 +501,8 @@ for x in f:
         except:
           print(
             "Error in fetching year from support vote signature on " +
-            "nomination: " +
+            currentNom.process +
+            ": " +
             currentNom.article
           )
           yearVote = ""
@@ -504,6 +518,19 @@ for x in f:
         currentNom.votes.append("")
 
 
+  # check for Comments section
+  elif re.search(patternComments, x):
+    isOpposeSection = False
+
+
+  # fetch nom end date, if present
+
+  elif re.search(patternEnddate, x):
+    isOpposeSection = False
+    currentNom.enddate = re.sub("(^.*approved\||[^0-9]*\(UTC\)|\}\})", "", x).strip()
+    currentNom.enddate = re.findall("\d\d:\d\d, \d+ (?:January|February|March|April|May|June|July|August|September|October|November|December),? \d\d\d\d", currentNom.enddate)[0]
+
+
   # process usernames in objections
 
     currentNom.objectors = []
@@ -513,12 +540,6 @@ for x in f:
       namePart = re.findall("\[\[User:.*\|", x)[0]
       name = re.sub("(\[\[User:|\|.*)", "", namePart)
       currentNom.objectors.append(name)
-
-
-  # fetch nom end date
-
-  elif re.search(patternEnddate, x):
-    currentNom.enddate = re.sub("(^.*approved\|| \(UTC\)|\}\})", "", x).strip()
 
 
   #wrap up with usernames in objections
@@ -533,14 +554,14 @@ for x in f:
         dateActual = re.findall(wikiDate, currentNom.enddate)[0]
 
         # remove commas, such as between month and year
-        dateActual = re.sub(",", "", dateActual)
+        dateCorrected = re.sub(",", "", dateActual)
 
         # process date to the format used in spreadsheet
-        dateObject = datetime.strptime(dateActual, "%d %B %Y")
+        dateObject = datetime.strptime(dateCorrected, "%d %B %Y")
         dateFinal = dateObject.strftime('%Y-%m-%d')
 
         dateTime = re.sub(dateActual, "'" + dateFinal, currentNom.enddate)
-        dateTime = re.sub(",", "#", dateTime)
+        dateTime = re.sub(",", "#", dateTime, 1)
 
         currentNom.enddate = dateTime
       else:

@@ -275,40 +275,15 @@ for x in f:
   # process nom result
 
   elif re.search(patternResult, x):
-    currentNom.result = re.sub(
-      (
-        "(" +
-        "^:''The following discussion is preserved as an archive of a " +
-        "\[\[Wookieepedia:Comprehensive article nominations\|Comprehensive " +
-        "article nomination\]\] that was '''" +
-        "|'''\. <span style=\"color: red;\">" +
-        "'''Please do not modify it.'''<\/span>\[\[Category:Wookieepedia " +
-        "Comprehensive article nomination pages archive\|\{\{SUBPAGENAME\}\}\]\]" +
-        "|^:''The following discussion is preserved as an archive of a " +
-        "\[\[Wookieepedia:Good article nominations\|Good " +
-        "article nomination\]\] that was '''" +
-        "|^:''The following discussion is preserved as an archive of a " +
-        "\[\[Wookieepedia:Good articles\|Good " +
-        "article nomination\]\] that was '''" +
-        "|'''\. <span style=\"color: red;\">" +
-        "'''Please do not modify it.'''<\/span>\[\[Category:Wookieepedia " +
-        "Good article nomination pages archive\|\{\{SUBPAGENAME\}\}\]\]" +
-        "|^:''The following discussion is preserved as an archive of a " +
-        "\[\[Wookieepedia:Featured article nominations\|Featured " +
-        "article nomination\]\] that was '''" +
-        "|'''\. <span style=\"color: red;\">" +
-        "'''Please do not modify it.'''<\/span>\[\[Category:Wookieepedia " +
-        "Featured article nomination pages archive\|\{\{SUBPAGENAME\}\}\]\]" +
-        "|'''. <span style=\"color: red;\">" +
-        "'''Please do not modify it.'''<\/span>\{\{SpecialCategorizer\|" +
-        "\[\[Category:Wookieepedia Featured article nomination pages archive" +
-        "\|\{\{SUBPAGENAME\}\}\]\]\}\}"
-        ")"
-      ),
-      "",
-      x
-    ).strip()
-
+    if re.search("withdrawn", x):
+      currentNom.result = "withdrawn"
+    elif re.search("unsuccessful", x):
+      currentNom.result = "unsuccessful"
+    elif re.search("successful", x):
+      currentNom.result = "successful"
+    else:
+      currentNom.result = "other"
+    
 
   # process nominator name and nom start date
 

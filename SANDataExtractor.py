@@ -23,16 +23,21 @@ patternArticle = (
   "|^\[\[Wookieepedia:Good article nominations/.*\]\]$" +
   "|^\[\[Wookieepedia:Featured article nominations/.*\]\]$)"
 )
+patternResultStart = (
+  "^:''The following discussion is preserved " +
+  "as an archive of a \[\[Wookieepedia:"
+)
+patternResultEnd = " article nomination\]\] that was '''.*'''."
 patternResult = (
-  "(^:''The following discussion is preserved as an archive " +
-  "of a \[\[Wookieepedia:Comprehensive article nominations\|Comprehensive " +
-  "article nomination\]\] that was '''.*'''." +
-  "|^:''The following discussion is preserved as an archive of a " +
-  "\[\[Wookieepedia:Good articles\|Good article nomination\]\] " +
-  "that was '''.*'''." +
-  "|^:''The following discussion is preserved as an archive of a " +
-  "\[\[Wookieepedia:Featured article nominations\|Featured article nomination\]\]" +
-  " that was '''.*'''.)"
+  "(" + patternResultStart + "Comprehensive article nominations\|Comprehensive" +
+  patternResultEnd +
+  "|" + patternResultStart + "Good articles\|Good" + # legacy wording
+  patternResultEnd +
+  "|" + patternResultStart + "Good article nominations\|Good" +
+  patternResultEnd +
+  "|" + patternResultStart + "Featured article nominations\|Featured" +
+  patternResultEnd +
+  ")"
 )
 patternNominator = "^\*'''Nominated by''':.*$"
 patternArchivalDate = "^\*'''Date Archived''':.*$"
@@ -43,6 +48,7 @@ patternObjectors = "^====Object====.*$"
 patternEnddate = "^\**\{\{.*approved\|.*$"
 patternNomEnd = "\[\[Category:Archived nominations by "
 WPlist = []
+
 f = open("WPlist.txt", "r")
 for x in f:
   x = x.rstrip("\n")

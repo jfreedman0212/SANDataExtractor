@@ -9,6 +9,8 @@ class Nom:
         self.result = ""
         self.nominator = ""
         self.startdate = ""
+        self.wordCountInitial = ""
+        self.wordCountFinal = ""
         self.WPs = []
         self.votes = []
         self.objectors = []
@@ -17,7 +19,7 @@ class Nom:
 noms = []
 spreadsheetConstant = 30
 separator = "# "
-sourceFile = "ca_noms.txt"
+sourceFile = "source.txt"
 resultsFile = "result.txt"
 
 isSupportSection = False
@@ -51,6 +53,8 @@ patternResult = (
 )
 patternNominator = r"^\*'''Nominated by''':.*$"
 patternArchivalDate = r"^\*'''Date Archived''':.*$"
+patternWordCountInitial = r"^\*'''Word count at nomination time''':.*$"
+patternWordCountFinal = r"^\*'''Final word count''':.*$"
 patternWPs = r"^\*'''WookieeProject \(optional\)''':.*$"
 patternVotes = "^====Support====.*$"
 patternComments = "^====Comments====.*$"
@@ -197,12 +201,26 @@ def processNominatorAndStartDate(x):
         currentNom.startdate = dateTime
 
 def processArchivalDate(x):
-    currentNom.enddate = re.sub(r"^\*'''Date Archived''': ", "", x).strip()
+    currentNom.enddate = re.sub(r"^\*'''Word count at nomination time''': ", "", x).strip()
     currentNom.enddate = re.findall(
         r"\d\d:\d\d, \d+ " +
         r"(?:January|February|March|April|May|June" +
         r"|July|August|September|October|November|December),? \d\d\d\d",
         currentNom.enddate
+    )[0]
+
+def processInitialWordCount(x):
+    currentNom.wordCountInitial = re.sub(r"^\*'''Date Archived''': ", "", x).strip()
+    currentNom.wordCountInitial = re.findall(
+        r"\d+",
+        currentNom.wordCountInitial
+    )[0]
+
+def processFinalWordCount(x):
+    currentNom.wordCountFinal = re.sub(r"^\*'''Date Archived''': ", "", x).strip()
+    currentNom.wordCountFinal = re.findall(
+        r"\d+",
+        currentNom.wordCountFinal
     )[0]
 
 def processWPs(x):
@@ -377,6 +395,8 @@ def writeNomDataToFile():
                 x.result + separator +
                 x.startdate + separator +
                 x.enddate + separator +
+                x.wordCountInitial + separator +
+                x.wordCountFinal + separator +
                 "; ".join(x.WPs) + separator +
                 "# ".join(x.votes) + separator +
                 "# ".join(x.objectors) + "\n"
@@ -399,6 +419,12 @@ with open(sourceFile, "r", encoding="utf8") as f:
 
         elif re.search(patternArchivalDate, x):
             processArchivalDate(x)
+
+        elif re.search(patternWordCountInitial, x):
+            processInitialWordCount(x)
+
+        elif re.search(patternWordCountFinal, x):
+            processFinalWordCount(x)
 
         elif re.search(patternWPs, x):
             processWPs(x)

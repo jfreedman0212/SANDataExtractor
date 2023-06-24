@@ -16,12 +16,18 @@ class Nom:
         self.objectors = []
         self.enddate = ""
 
-noms = []
 spreadsheetConstant = 30
 separator = "# "
 sourceFile = "source.txt"
 resultsFile = "result.txt"
 
+lines = []
+titleLines = []
+noms = []
+
+nomCounter = 0
+
+titlesAtStartOfNoms = True
 isSupportSection = False
 isOpposeSection = False
 inNomination = False
@@ -30,11 +36,12 @@ wikiDate = (
     r"\d+ (?:January|February|March|April|May|June|" +
     r"July|August|September|October|November|December),? \d\d\d\d"
 )
-patternArticle = (
+patternNomTitle = (
     r"(^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$" +
     r"|^\[\[Wookieepedia:Good article nominations/.*\]\]$" +
     r"|^\[\[Wookieepedia:Featured article nominations/.*\]\]$)"
 )
+patternNomStart = "<div id=\"old-forum-warning\""
 patternResultStart = (
     "^:''The following discussion is preserved " +
     r"as an archive of a \[\[Wookieepedia:"
@@ -43,7 +50,7 @@ patternResultEnd = r" article nomination\]\] that was '''.*'''."
 patternResult = (
     "(" + patternResultStart + r"Comprehensive article nominations\|Comprehensive" +
     patternResultEnd +
-    "|" + patternResultStart + r"Good articles\|Good" + # legacy wording
+    "|" + patternResultStart + r"Good articles\|Good" + # legacy structure
     patternResultEnd +
     "|" + patternResultStart + r"Good article nominations\|Good" +
     patternResultEnd +
@@ -96,6 +103,30 @@ def processNomTypeAndTitle(x):
         "",
         x
     ).strip()
+
+def processNomStart():
+    global titlesAtStartOfNoms
+    global nomCounter
+
+    if titlesAtStartOfNoms:
+        # check if this works
+        if currentNom.article:
+            pass
+        else:
+            titlesAtStartOfNoms = False
+            for i,x in enumerate(lines, 1):
+                if (
+                re.search(r"^\[\[Category:Archived nominations", lines[-i]) or
+                re.search(r"^Retrieving \d", lines[-i]) or
+                re.search("</div>", lines[-i])
+                ):
+                    break
+                titleLines.append(lines[-i].rstrip("\n"))
+            nomCounter += 1
+            processNomTypeAndTitle(titleLines[-nomCounter])
+    else:
+        nomCounter += 1
+        processNomTypeAndTitle(titleLines[-nomCounter])
 
 def processNomResult(x):
     if re.search("withdrawn", x):
@@ -407,48 +438,53 @@ fetchWPlist()
 
 with open(sourceFile, "r", encoding="utf8") as f:
     for x in f:
+        lines.append(x)
 
-        if re.search(patternArticle, x):
-            processNomTypeAndTitle(x)
+for line in lines:
+    if re.search(patternNomTitle, line):
+        processNomTypeAndTitle(line)
 
-        elif re.search(patternResult, x):
-            processNomResult(x)
+    elif re.search(patternNomStart, line):
+        processNomStart()
 
-        elif re.search(patternNominator, x):
-            processNominatorAndStartDate(x)
+    elif re.search(patternResult, line):
+        processNomResult(line)
 
-        elif re.search(patternArchivalDate, x):
-            processArchivalDate(x)
+    elif re.search(patternNominator, line):
+        processNominatorAndStartDate(line)
 
-        elif re.search(patternWordCountInitial, x):
-            processInitialWordCount(x)
+    elif re.search(patternArchivalDate, line):
+        processArchivalDate(line)
 
-        elif re.search(patternWordCountFinal, x):
-            processFinalWordCount(x)
+    elif re.search(patternWordCountInitial, line):
+        processInitialWordCount(line)
 
-        elif re.search(patternWPs, x):
-            processWPs(x)
+    elif re.search(patternWordCountFinal, line):
+        processFinalWordCount(line)
 
-        elif re.search(patternVotes, x): # enter support votes section
-            isSupportSection = True
+    elif re.search(patternWPs, line):
+        processWPs(line)
 
-        elif re.search("^#", x): # process each vote
-            processOneVote(x)
+    elif re.search(patternVotes, line): # enter support votes section
+        isSupportSection = True
 
-        elif re.search(patternObjectors, x):
-            endSupportSection()
+    elif re.search("^#", line): # process each vote
+        processOneVote(line)
 
-        elif re.search(patternComments, x):
-            isOpposeSection = False
+    elif re.search(patternObjectors, line):
+        endSupportSection()
 
-        elif re.search(patternEnddate, x):
-            processEndDate(x)
+    elif re.search(patternComments, line):
+        isOpposeSection = False
 
-        elif re.search(r"\[\[User:", x):
-            processObjector(x)
+    elif re.search(patternEnddate, line):
+        processEndDate(line)
 
-        elif re.search(patternNomEnd, x):
-            processNomEnd()
+    elif re.search(r"\[\[User:", line):
+        processObjector(line)
+
+    elif re.search(patternNomEnd, line):
+        processNomEnd()
 
 # output the nomination data as a txt (csv) file
 writeNomDataToFile()

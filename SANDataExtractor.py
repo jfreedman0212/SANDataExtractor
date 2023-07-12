@@ -28,6 +28,7 @@ noms = []
 nomCounter = 0
 
 titlesAtStartOfNoms = True
+isNominatorSection = False
 isSupportSection = False
 isOpposeSection = False
 inNomination = False
@@ -139,6 +140,10 @@ def processNomResult(x):
         currentNom.result = "other"
 
 def processNominatorAndStartDate(x):
+    global isNominatorSection
+
+    isNominatorSection = True
+
     # get the user input part of the nominator field
     # if it contains a link to a userpage
     if re.search(r"\[\[User:[^\]\|\/]*", x):
@@ -147,34 +152,7 @@ def processNominatorAndStartDate(x):
     else:
         inputPart = re.sub(r"^\*'''Nominated by''': *", "", x).strip()
 
-    try:
-        # get a list of usernames linked in there
-        userPages = re.findall(r"\[\[User:[^\]\|\/]*", inputPart)
-
-        # remove any duplicates
-        userPages = list(dict.fromkeys(userPages))
-
-        # trim the User: prefix
-        i = 0
-        while i < len(userPages):
-            userPages[i] = re.sub(r"\[\[User:", "", userPages[i])
-            i = i + 1
-
-        userPages.sort()
-
-        # concatenate co-nominator usernames
-        if len(userPages) > 1:
-            currentNom.nominator = ", ".join(userPages)
-        else:
-            currentNom.nominator = userPages[0]
-    except IndexError:
-        print(
-            "Error in fetching username from byline signature on " +
-            currentNom.process +
-            ": " +
-            currentNom.article
-        )
-        currentNom.nominator = inputPart
+    processNominator(x)
 
     # process start date
     try:
@@ -231,6 +209,33 @@ def processNominatorAndStartDate(x):
 
         currentNom.startdate = dateTime
 
+def processNominator(inputPart):
+    try:
+        # get a list of usernames linked in there
+        userPages = re.findall(r"\[\[User:[^\]\|\/]*", inputPart)
+
+        # remove any duplicates
+        userPages = list(dict.fromkeys(userPages))
+
+        # trim the User: prefix
+        i = 0
+        while i < len(userPages):
+            userPages[i] = re.sub(r"\[\[User:", "", userPages[i])
+            i = i + 1
+
+        userPages.sort()
+
+        # concatenate co-nominator usernames
+        currentNom.nominator += ", " + ", ".join(userPages)
+    except IndexError:
+        print(
+            "Error in fetching username from byline signature on " +
+            currentNom.process +
+            ": " +
+            currentNom.article
+        )
+        currentNom.nominator += ", " + inputPart
+
 def processArchivalDate(x):
     currentNom.enddate = re.sub(r"^\*'''Word count at nomination time''': ", "", x).strip()
     currentNom.enddate = re.findall(
@@ -255,6 +260,10 @@ def processFinalWordCount(x):
     )[0]
 
 def processWPs(x):
+    global isNominatorSection
+
+    isNominatorSection = False
+
     currentNom.WPs = []
 
     # trim field text, strip spaces, convert to uppercase
@@ -362,10 +371,9 @@ def processEndDate(x):
     currentNom.objectors = []
 
 def processObjector(x):
-    if isOpposeSection:
-        namePart = re.findall(r"\[\[User:.*\|", x)[0]
-        name = re.sub(r"(\[\[User:|\|.*)", "", namePart)
-        currentNom.objectors.append(name)
+    namePart = re.findall(r"\[\[User:.*\|", x)[0]
+    name = re.sub(r"(\[\[User:|\|.*)", "", namePart)
+    currentNom.objectors.append(name)
 
 def processNomEnd():
     global isOpposeSection
@@ -419,7 +427,7 @@ def writeNomDataToFile():
     with open(resultsFile, "a", encoding="utf8") as f:
         for x in noms:
             f.write(
-                x.nominator + separator +
+                x.nominator[2:] + separator +
                 x.article + separator +
                 "" + separator + # continuity
                 x.process + separator +
@@ -481,7 +489,10 @@ for line in lines:
         processEndDate(line)
 
     elif re.search(r"\[\[User:", line):
-        processObjector(line)
+        if isNominatorSection:
+            processNominator(line)
+        elif isOpposeSection:
+            processObjector(line)
 
     elif re.search(patternNomEnd, line):
         processNomEnd()

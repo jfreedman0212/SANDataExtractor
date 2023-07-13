@@ -260,10 +260,6 @@ def processFinalWordCount(x):
     )[0]
 
 def processWPs(x):
-    global isNominatorSection
-
-    isNominatorSection = False
-
     currentNom.WPs = []
 
     # trim field text, strip spaces, convert to uppercase
@@ -474,6 +470,7 @@ for line in lines:
         processWPs(line)
 
     elif re.search(patternVotes, line): # enter support votes section
+        isNominatorSection = False
         isSupportSection = True
 
     elif re.search("^#", line): # process each vote

@@ -18,7 +18,7 @@ class Nom:
 
 spreadsheetConstant = 30
 separator = "# "
-sourceFile = "ca_nom_archive_2017.txt"
+sourceFile = "source.txt"
 resultsFile = "result.txt"
 
 lines = []
@@ -169,23 +169,35 @@ def processNominatorAndStartDate(x):
     ):
         dateFormatCurrent = dateFormatAlternate
 
-    timestamp = re.findall(
-        (
-            r"\d{1,2}:\d{2},? " + wikiDate + r"[^0-9]*\(UTC\)"
-        ),
-        inputPart
-    )[0]
+    try:
+        timestamp = re.findall(
+            (
+                r"\d{1,2}:\d{2},? " + wikiDate + r"[^0-9]*\(UTC\)"
+            ),
+            inputPart
+        )[0]
+    except IndexError:
+        print(
+            "Error in fetching timestamp from byline signature on " +
+            currentNom.process +
+            ": " +
+            currentNom.article
+        )
+        timestamp = ""
 
-    dateTime = re.sub(r"[^0-9]*\(UTC\)", "", timestamp)
-    date = re.findall(wikiDate, dateTime)[0]
+    if timestamp:
+        dateTime = re.sub(r"[^0-9]*\(UTC\)", "", timestamp)
+        date = re.findall(wikiDate, dateTime)[0]
 
-    # process date to the format used in spreadsheet
-    dateSansComma = re.sub(",", "", date).strip()
-    dateObject = datetime.strptime(dateSansComma, dateFormatCurrent)
-    dateFinal = dateObject.strftime('%Y-%m-%d')
-    dateTime = re.sub(date, "'" + dateFinal, dateTime)
+        # process date to the format used in spreadsheet
+        dateSansComma = re.sub(",", "", date).strip()
+        dateObject = datetime.strptime(dateSansComma, dateFormatCurrent)
+        dateFinal = dateObject.strftime('%Y-%m-%d')
+        dateTime = re.sub(date, "'" + dateFinal, dateTime)
 
-    dateTime = re.sub(",", "#", dateTime)
+        dateTime = re.sub(",", "#", dateTime)
+    else:
+        dateTime = ""
 
     currentNom.startdate = dateTime
 
@@ -343,10 +355,19 @@ def processEndDate(x):
 
     isOpposeSection = False
     currentNom.enddate = re.sub(r"(^.*approved\||[^0-9]*\(UTC\)|\}\})", "", x).strip()
-    currentNom.enddate = re.findall(
-        r"\d{1,2}:\d{2},? " + wikiDate,
-        currentNom.enddate
-    )[0]
+    try:
+        currentNom.enddate = re.findall(
+            r"\d{1,2}:\d{2},? " + wikiDate,
+            currentNom.enddate
+        )[0]
+    except IndexError:
+        print(
+            "Error in fetching nomination end date on " +
+            currentNom.process +
+            ": " +
+            currentNom.article
+        )
+        currentNom.enddate = ""
 
     # process usernames in objections
 
@@ -367,7 +388,7 @@ def processNomEnd():
         # save end date if nom has been successful
         if currentNom.enddate:
             dateFormatCurrent = dateFormat
-            
+
             # extract date from timestamp
             dateActual = re.findall(wikiDate, currentNom.enddate)[0]
 

@@ -34,9 +34,12 @@ isOpposeSection = False
 inNomination = False
 
 wikiDate = (
-    r"\d+ (?:January|February|March|April|May|June|" +
-    r"July|August|September|October|November|December),? \d\d\d\d"
+    r"\d* *(?:January|February|March|April|May|June|" +
+    r"July|August|September|October|November|December) *\d*,? \d{4}"
 )
+dateFormat = "%d %B %Y"
+dateFormatAlternate = "%B %d %Y"
+patternUserLink = r"\[\[User:"
 patternNomTitle = (
     r"(^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$" +
     r"|^\[\[Wookieepedia:Good article nominations/.*\]\]$" +
@@ -146,7 +149,7 @@ def processNominatorAndStartDate(x):
 
     # get the user input part of the nominator field
     # if it contains a link to a userpage
-    if re.search(r"\[\[User:[^\]\|\/]*", x):
+    if re.search(patternUserLink + r"[^\]\|\/]*", x):
         inputPart = re.sub(r"^\*'''Nominated by''':[^\[]*", "", x).strip()
     # if it doesn't
     else:
@@ -155,64 +158,47 @@ def processNominatorAndStartDate(x):
     processNominator(x)
 
     # process start date
-    try:
-        timestamp = re.findall(
-            (
-                r"\d\d:\d\d, " + wikiDate + r"[^0-9]*\(UTC\)"
-            ),
-            inputPart
-        )[0]
+    dateFormatCurrent = dateFormat
 
-        dateTime = re.sub(r"[^0-9]*\(UTC\)", "", timestamp)
-        date = re.findall(wikiDate, dateTime)[0]
-
-        # process date to the format used in spreadsheet
-        dateSansComma = re.sub(",", "", date)
-        dateObject = datetime.strptime(dateSansComma, "%d %B %Y")
-        dateFinal = dateObject.strftime('%Y-%m-%d')
-
-        dateTime = re.sub(date, "'" + dateFinal, dateTime)
-        dateTime = re.sub(",", "#", dateTime)
-
-        currentNom.startdate = dateTime
-
-    except IndexError:
+    if not re.search(
+        (
+            r"\d+ (?:January|February|March|April|May|June|" +
+            r"July|August|September|October|November|December),? \d{4}"
+        ),
+        inputPart
+    ):
+        dateFormatCurrent = dateFormatAlternate
         print(
-            "Error in fetching date from byline signature on " +
+            "Alternate date format in byline signature on " +
             currentNom.process +
             ": " +
             currentNom.article
         )
 
-        wikiDateTemp = (
-            "(?:January|February|March|April|May|June|" +
-            r"July|August|September|October|November|December) \d+,? \d\d\d\d"
-        )
+    timestamp = re.findall(
+        (
+            r"\d{1,2}:\d{2},? " + wikiDate + r"[^0-9]*\(UTC\)"
+        ),
+        inputPart
+    )[0]
 
-        timestamp = re.findall(
-            (
-                r"\d\d:\d\d, " + wikiDateTemp + r"[^0-9]*\(UTC\)"
-            ),
-            inputPart
-        )[0]
+    dateTime = re.sub(r"[^0-9]*\(UTC\)", "", timestamp)
+    date = re.findall(wikiDate, dateTime)[0]
 
-        dateTime = re.sub(r"[^0-9]*\(UTC\)", "", timestamp)
-        date = re.findall(wikiDateTemp, dateTime)[0]
+    # process date to the format used in spreadsheet
+    dateSansComma = re.sub(",", "", date).strip()
+    dateObject = datetime.strptime(dateSansComma, dateFormatCurrent)
+    dateFinal = dateObject.strftime('%Y-%m-%d')
+    dateTime = re.sub(date, "'" + dateFinal, dateTime)
 
-        # process date to the format used in spreadsheet
-        dateSansComma = re.sub(",", "", date)
-        dateObject = datetime.strptime(dateSansComma, "%B %d %Y")
-        dateFinal = dateObject.strftime('%Y-%m-%d')
+    dateTime = re.sub(",", "#", dateTime)
 
-        dateTime = re.sub(date, "'" + dateFinal, dateTime)
-        dateTime = re.sub(",", "#", dateTime)
-
-        currentNom.startdate = dateTime
+    currentNom.startdate = dateTime
 
 def processNominator(inputPart):
     try:
         # get a list of usernames linked in there
-        userPages = re.findall(r"\[\[User:[^\]\|\/]*", inputPart)
+        userPages = re.findall(patternUserLink + r"[^\]\|\/]*", inputPart)
 
         # remove any duplicates
         userPages = list(dict.fromkeys(userPages))
@@ -220,7 +206,7 @@ def processNominator(inputPart):
         # trim the User: prefix
         i = 0
         while i < len(userPages):
-            userPages[i] = re.sub(r"\[\[User:", "", userPages[i])
+            userPages[i] = re.sub(patternUserLink, "", userPages[i])
             i = i + 1
 
         userPages.sort()
@@ -239,9 +225,7 @@ def processNominator(inputPart):
 def processArchivalDate(x):
     currentNom.enddate = re.sub(r"^\*'''Word count at nomination time''': ", "", x).strip()
     currentNom.enddate = re.findall(
-        r"\d\d:\d\d, \d+ " +
-        r"(?:January|February|March|April|May|June" +
-        r"|July|August|September|October|November|December),? \d\d\d\d",
+        r"\d{1,2}:\d{2},? " + wikiDate,
         currentNom.enddate
     )[0]
 
@@ -302,7 +286,7 @@ def processOneVote(x):
                 currentNom.votes.append("")
 
             # fetch and save usernames present on the vote line
-            userPages = re.findall(r"\[\[User:[^\]\|\/]*", x)
+            userPages = re.findall(patternUserLink + r"[^\]\|\/]*", x)
 
             # remove any duplicates
             userPages = list(dict.fromkeys(userPages))
@@ -310,7 +294,7 @@ def processOneVote(x):
             # trim the User: prefix
             i = 0
             while i < len(userPages):
-                userPages[i] = re.sub(r"\[\[User:", "", userPages[i])
+                userPages[i] = re.sub(patternUserLink, "", userPages[i])
                 i = i + 1
 
             userPages.sort()
@@ -329,7 +313,7 @@ def processOneVote(x):
 
             # fetch and save the last year present on the vote line
             try:
-                yearVote = re.findall(r"\d\d\d\d", x)[-1]
+                yearVote = re.findall(r"\d{4}", x)[-1]
             except IndexError:
                 print(
                     "Error in fetching year from support vote signature on " +
@@ -357,8 +341,7 @@ def processEndDate(x):
     isOpposeSection = False
     currentNom.enddate = re.sub(r"(^.*approved\||[^0-9]*\(UTC\)|\}\})", "", x).strip()
     currentNom.enddate = re.findall(
-        r"\d\d:\d\d, \d+ (?:January|February|March|April|May|June" +
-        r"|July|August|September|October|November|December),? \d\d\d\d",
+        r"\d{1,2}:\d{2},? " + wikiDate,
         currentNom.enddate
     )[0]
 
@@ -367,8 +350,8 @@ def processEndDate(x):
     currentNom.objectors = []
 
 def processObjector(x):
-    namePart = re.findall(r"\[\[User:.*\|", x)[0]
-    name = re.sub(r"(\[\[User:|\|.*)", "", namePart)
+    namePart = re.findall(patternUserLink + r".*\|", x)[0]
+    name = re.sub("(" + patternUserLink + r"|\|.*)", "", namePart)
     currentNom.objectors.append(name)
 
 def processNomEnd():
@@ -380,14 +363,31 @@ def processNomEnd():
     if inNomination:
         # save end date if nom has been successful
         if currentNom.enddate:
+            dateFormatCurrent = dateFormat
+            
             # extract date from timestamp
             dateActual = re.findall(wikiDate, currentNom.enddate)[0]
 
+            if not re.search(
+                (
+                    r"\d+ (?:January|February|March|April|May|June|" +
+                    r"July|August|September|October|November|December),? \d{4}"
+                ),
+                dateActual
+            ):
+                dateFormatCurrent = dateFormatAlternate
+                print(
+                    "Alternate format for archival date on " +
+                    currentNom.process +
+                    ": " +
+                    currentNom.article
+                )
+
             # remove commas, such as between month and year
-            dateCorrected = re.sub(",", "", dateActual)
+            dateCorrected = re.sub(",", "", dateActual).strip()
 
             # process date to the format used in spreadsheet
-            dateObject = datetime.strptime(dateCorrected, "%d %B %Y")
+            dateObject = datetime.strptime(dateCorrected, dateFormatCurrent)
             dateFinal = dateObject.strftime('%Y-%m-%d')
 
             dateTime = re.sub(dateActual, "'" + dateFinal, currentNom.enddate)
@@ -485,7 +485,7 @@ for line in lines:
     elif re.search(patternEnddate, line):
         processEndDate(line)
 
-    elif re.search(r"\[\[User:", line):
+    elif re.search(patternUserLink, line):
         if isNominatorSection:
             processNominator(line)
         elif isOpposeSection:

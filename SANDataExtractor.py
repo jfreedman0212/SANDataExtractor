@@ -39,7 +39,7 @@ wikiDate = (
 )
 dateFormat = "%d %B %Y"
 dateFormatAlternate = "%B %d %Y"
-patternUserLink = r"\[\[User:"
+patternUserLink = r"(?:\[\[|\{\{)User:"
 patternNomTitle = (
     r"(^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$" +
     r"|^\[\[Wookieepedia:Good article nominations/.*\]\]$" +
@@ -150,12 +150,12 @@ def processNominatorAndStartDate(x):
     # get the user input part of the nominator field
     # if it contains a link to a userpage
     if re.search(patternUserLink + r"[^\]\|\/]*", x):
-        inputPart = re.sub(r"^\*'''Nominated by''':[^\[]*", "", x).strip()
+        inputPart = re.sub(r"^\*'''Nominated by''':[^\[\{\/]*", "", x).strip()
     # if it doesn't
     else:
         inputPart = re.sub(r"^\*'''Nominated by''': *", "", x).strip()
 
-    processNominator(x)
+    processNominator(inputPart)
 
     # process start date
     dateFormatCurrent = dateFormat
@@ -278,9 +278,9 @@ def processOneVote(x):
 
         else:
             # fetch and save review panel vote tag if present
-            if re.search(r"^#(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x):
+            if re.search(r"^# *(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x):
                 currentNom.votes.append(
-                    re.findall(r"^#(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x)[0]
+                    re.findall(r"^# *(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x)[0]
                 )
             else:
                 currentNom.votes.append("")
@@ -303,13 +303,22 @@ def processOneVote(x):
                 # concatenate the usernames without checking for any duplicate votes
                 currentNom.votes.append(", ".join(userPages))
             else:
-                # check for any duplicate votes
-                if userPages[0] in currentNom.votes:
-                    # in case of duplicate vote,
-                    # remove the already-added panel tag field
-                    currentNom.votes.pop(-1)
-                else:
-                    currentNom.votes.append(userPages[0])
+                try:
+                    # check for any duplicate votes
+                    if userPages[0] in currentNom.votes:
+                        # in case of duplicate vote,
+                        # remove the already-added panel tag field
+                        currentNom.votes.pop(-1)
+                    else:
+                        currentNom.votes.append(userPages[0])
+                except IndexError:
+                    print(
+                        "Error in fetching username from vote " +
+                        currentNom.process +
+                        ": " +
+                        currentNom.article
+                    )
+                    currentNom.votes.append("")
 
             # fetch and save the last year present on the vote line
             try:
@@ -350,8 +359,8 @@ def processEndDate(x):
     currentNom.objectors = []
 
 def processObjector(x):
-    namePart = re.findall(patternUserLink + r".*\|", x)[0]
-    name = re.sub("(" + patternUserLink + r"|\|.*)", "", namePart)
+    namePart = re.findall(patternUserLink + r".*(\||\/)", x)[0]
+    name = re.sub("(" + patternUserLink + r"|\|.*|\/.*)", "", namePart)
     currentNom.objectors.append(name)
 
 def processNomEnd():

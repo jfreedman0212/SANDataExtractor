@@ -18,7 +18,7 @@ class Nom:
 
 spreadsheetConstant = 30
 separator = "# "
-sourceFile = "source.txt"
+sourceFile = "ca_nom_archive_2017.txt"
 resultsFile = "result.txt"
 
 lines = []
@@ -168,12 +168,6 @@ def processNominatorAndStartDate(x):
         inputPart
     ):
         dateFormatCurrent = dateFormatAlternate
-        print(
-            "Alternate date format in byline signature on " +
-            currentNom.process +
-            ": " +
-            currentNom.article
-        )
 
     timestamp = re.findall(
         (
@@ -313,7 +307,7 @@ def processOneVote(x):
                         currentNom.votes.append(userPages[0])
                 except IndexError:
                     print(
-                        "Error in fetching username from vote " +
+                        "Error in fetching username from vote on " +
                         currentNom.process +
                         ": " +
                         currentNom.article
@@ -359,7 +353,7 @@ def processEndDate(x):
     currentNom.objectors = []
 
 def processObjector(x):
-    namePart = re.findall(patternUserLink + r".*(\||\/)", x)[0]
+    namePart = re.findall(patternUserLink + r".*(\||\/|\])", x)[0]
     name = re.sub("(" + patternUserLink + r"|\|.*|\/.*)", "", namePart)
     currentNom.objectors.append(name)
 
@@ -385,12 +379,6 @@ def processNomEnd():
                 dateActual
             ):
                 dateFormatCurrent = dateFormatAlternate
-                print(
-                    "Alternate format for archival date on " +
-                    currentNom.process +
-                    ": " +
-                    currentNom.article
-                )
 
             # remove commas, such as between month and year
             dateCorrected = re.sub(",", "", dateActual).strip()

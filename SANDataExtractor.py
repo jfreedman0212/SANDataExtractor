@@ -52,26 +52,30 @@ patternResultStart = (
 )
 patternResultEnd = r" article nomination\]\] that was '''.*'''."
 patternResult = (
-    "(" + patternResultStart + r"Comprehensive article nominations\|Comprehensive" +
+    "(" + patternResultStart +
+    r"(Comprehensive article nominations\|Comprehensive|Comprehensive article nominations\|comprehensive)" +
     patternResultEnd +
-    "|" + patternResultStart + r"Good articles\|Good" + # legacy structure
+    "|" + patternResultStart +
+    r"(Good articles\|Good|Good articles\|good)" + # legacy structure
     patternResultEnd +
-    "|" + patternResultStart + r"Good article nominations\|Good" +
+    "|" + patternResultStart +
+    r"(Good article nominations\|Good|Good article nominations\|good)" +
     patternResultEnd +
-    "|" + patternResultStart + r"Featured article nominations\|Featured" +
+    "|" + patternResultStart +
+    r"(Featured article nominations\|Featured|Featured article nominations\|featured)" +
     patternResultEnd +
     ")"
 )
-patternNominator = r"^\*'''Nominated by''':.*$"
+patternNominator = r"^\*'''Nominated by(''':|:''').*$"
 patternArchivalDate = r"^\*'''Date Archived''':.*$"
 patternWordCountInitial = r"^\*'''Word count at nomination time''':.*$"
 patternWordCountFinal = r"^\*'''Final word count''':.*$"
 patternWPs = r"^\*'''WookieeProject \(optional\)''':.*$"
-patternVotes = "^====Support====.*$"
-patternComments = "^====Comments====.*$"
-patternObjectors = "^====Object====.*$"
+patternVotes = "^('''|====)Support('''|====)$"
+patternComments = "^('''|====)Comments('''|====)$"
+patternObjectors = "^('''|====)Object(ions)?('''|====)$"
 patternEnddate = r"^\**\{\{.*approved\|.*$"
-patternNomEnd = r"\[\[Category:Archived nominations by "
+patternNomEnd = r"\[\[Category:Archived nominations"
 WPlist = []
 currentNom = Nom()
 

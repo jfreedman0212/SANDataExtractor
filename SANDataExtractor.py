@@ -28,6 +28,8 @@ noms = []
 nomCounter = 0
 
 titlesAtStartOfNoms = True
+bylineExists = False
+supportSectionExists = False
 isNominatorSection = False
 isSupportSection = False
 isOpposeSection = False
@@ -147,8 +149,10 @@ def processNomResult(x):
         currentNom.result = "other"
 
 def processNominatorAndStartDate(x):
+    global bylineExists
     global isNominatorSection
 
+    bylineExists = True
     isNominatorSection = True
 
     # get the user input part of the nominator field
@@ -385,8 +389,12 @@ def processObjector(x):
 def processNomEnd():
     global isOpposeSection
     global inNomination
+    global bylineExists
+    global supportSectionExists
 
     isOpposeSection = False
+    bylineExists = False
+    supportSectionExists = False
 
     if inNomination:
         # save end date if nom has been successful
@@ -493,10 +501,18 @@ for line in lines:
 
     elif re.search(patternVotes, line): # enter support votes section
         isNominatorSection = False
+        supportSectionExists = True
         isSupportSection = True
 
     elif re.search("^#", line): # process each vote
-        processOneVote(line)
+        if not currentNom.nominator:
+            if supportSectionExists:
+                if not bylineExists:
+                    processNominator(line)
+            else:
+                processNominator(line)
+        else:
+            processOneVote(line)
 
     elif re.search(patternObjectors, line):
         endSupportSection()

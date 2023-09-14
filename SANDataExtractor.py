@@ -37,11 +37,13 @@ inNomination = False
 
 wikiDate = (
     r"\d* *(?:January|February|March|April|May|June|" +
+    "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|"
     r"July|August|September|October|November|December) *\d*,? \d{4}"
 )
 dateFormat = "%d %B %Y"
 dateFormatAlternate = "%B %d %Y"
-patternUserLink = r"(?:\[\[|\{\{)User:"
+dateFormatAlternate2 = "%d %b %Y"
+patternUserLink = r"(?:\[\[|\{\{)(?:w:c:starwars:User:|User:)"
 patternNomTitle = (
     r"(^\[\[Wookieepedia:Comprehensive article nominations/.*\]\]$" +
     r"|^\[\[Wookieepedia:Good article nominations/.*\]\]$" +
@@ -165,49 +167,8 @@ def processNominatorAndStartDate(x):
 
     processNominator(inputPart)
 
-    # process start date
-    dateFormatCurrent = dateFormat
+    processStartDate(inputPart)
 
-    if not re.search(
-        (
-            r"\d+ (?:January|February|March|April|May|June|" +
-            r"July|August|September|October|November|December),? \d{4}"
-        ),
-        inputPart
-    ):
-        dateFormatCurrent = dateFormatAlternate
-
-    try:
-        timestamp = re.findall(
-            (
-                r"\d{1,2}:\d{2},? " + wikiDate + r"[^0-9]*\(UTC\)"
-            ),
-            inputPart
-        )[0]
-    except IndexError:
-        print(
-            "Error in fetching timestamp from byline signature on " +
-            currentNom.process +
-            ": " +
-            currentNom.article
-        )
-        timestamp = ""
-
-    if timestamp:
-        dateTime = re.sub(r"[^0-9]*\(UTC\)", "", timestamp)
-        date = re.findall(wikiDate, dateTime)[0]
-
-        # process date to the format used in spreadsheet
-        dateSansComma = re.sub(",", "", date).strip()
-        dateObject = datetime.strptime(dateSansComma, dateFormatCurrent)
-        dateFinal = dateObject.strftime('%Y-%m-%d')
-        dateTime = re.sub(date, "'" + dateFinal, dateTime)
-
-        dateTime = re.sub(",", "#", dateTime)
-    else:
-        dateTime = ""
-
-    currentNom.startdate = dateTime
 
 def processNominator(inputPart):
     try:
@@ -236,10 +197,56 @@ def processNominator(inputPart):
         )
         currentNom.nominator += ", " + inputPart
 
+def processStartDate(inputPart):
+    dateFormatCurrent = dateFormat
+
+    if not re.search((
+        r"\d+ (?:January|February|March|April|May|June|" +
+        r"July|August|September|October|November|December),? \d{4}"
+    ), inputPart):
+        if re.search((
+            r"\d+ (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec),? \d{4}"
+        ), inputPart):
+            dateFormatCurrent = dateFormatAlternate2
+        else:
+            dateFormatCurrent = dateFormatAlternate
+
+    try:
+        timestamp = re.findall(
+            (
+                r"\d{1,2}: ?\d{2},? " + wikiDate + r"[^0-9]*\(UTC\)"
+            ),
+            inputPart
+        )[0]
+    except IndexError:
+        print(
+            "Error in fetching timestamp from byline signature on " +
+            currentNom.process +
+            ": " +
+            currentNom.article
+        )
+        timestamp = ""
+
+    if timestamp:
+        dateTime = re.sub(r"[^0-9]*\(UTC\)", "", timestamp)
+        date = re.findall(wikiDate, dateTime)[0]
+
+        # process date to the format used in spreadsheet
+        dateSansComma = re.sub(",", "", date).strip()
+        dateObject = datetime.strptime(dateSansComma, dateFormatCurrent)
+        dateFinal = dateObject.strftime('%Y-%m-%d')
+        dateTime = re.sub(date, "'" + dateFinal, dateTime)
+
+        dateTime = re.sub(",", "#", dateTime)
+    else:
+        dateTime = ""
+
+    currentNom.startdate = dateTime
+
 def processArchivalDate(x):
     currentNom.enddate = re.sub(r"^\*'''Word count at nomination time''': ", "", x).strip()
     currentNom.enddate = re.findall(
-        r"\d{1,2}:\d{2},? " + wikiDate,
+        r"\d{1,2}: ?\d{2},? " + wikiDate,
         currentNom.enddate
     )[0]
 
@@ -365,7 +372,7 @@ def processEndDate(x):
     currentNom.enddate = re.sub(r"(^.*approved\||[^0-9]*\(UTC\)|\}\})", "", x).strip()
     try:
         currentNom.enddate = re.findall(
-            r"\d{1,2}:\d{2},? " + wikiDate,
+            r"\d{1,2}: ?\d{2},? " + wikiDate,
             currentNom.enddate
         )[0]
     except IndexError:
@@ -404,14 +411,16 @@ def processNomEnd():
             # extract date from timestamp
             dateActual = re.findall(wikiDate, currentNom.enddate)[0]
 
-            if not re.search(
-                (
-                    r"\d+ (?:January|February|March|April|May|June|" +
-                    r"July|August|September|October|November|December),? \d{4}"
-                ),
-                dateActual
-            ):
-                dateFormatCurrent = dateFormatAlternate
+            if not re.search((
+                r"\d+ (?:January|February|March|April|May|June|" +
+                r"July|August|September|October|November|December),? \d{4}"
+            ), dateActual):
+                if re.search((
+                    r"\d+ (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec),? \d{4}"
+                ), dateActual):
+                    dateFormatCurrent = dateFormatAlternate2
+                else:
+                    dateFormatCurrent = dateFormatAlternate
 
             # remove commas, such as between month and year
             dateCorrected = re.sub(",", "", dateActual).strip()
@@ -509,8 +518,10 @@ for line in lines:
             if supportSectionExists:
                 if not bylineExists:
                     processNominator(line)
+                    processStartDate(line)
             else:
                 processNominator(line)
+                processStartDate(line)
         else:
             processOneVote(line)
 

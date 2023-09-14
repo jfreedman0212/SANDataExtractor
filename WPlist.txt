@@ -30,7 +30,7 @@ Wookieepedia:WookieeProject Tales of the Jedi,WP:TOTJ,WP:Totj,WP:TotJ,WP:Tales o
 Wookieepedia:WookieeProject The Clone Wars,WP:TCW,WP:The Clone Wars,WookieeProject The Clone Wars
 Wookieepedia:WookieeProject The Force Unleashed,WP:TFU,WP:The Force Unleashed,WookieeProject The Force Unleashed
 Wookieepedia:WookieeProject The High Republic,WP:THR,WP:The High Republic,WookieeProject The High Republic
-Wookieepedia:WookieeProject The Mandalorian,WP:TMND,WP:The Mandalorian,WP:Mandalorian,WP:MANDALORIAN,WookieeProject The Mandalorian
+Wookieepedia:WookieeProject Mandoverse,MANDOVERSE,The Mandalorian,WP:TMND,WP:The Mandalorian,WP:Mandalorian,WP:MANDALORIAN,WookieeProject The Mandalorian
 Wookieepedia:WookieeProject The New Essential Guide to Characters,WP:NEGTC,WookieeProject The New Essential Guide to Characters
 Wookieepedia:WookieeProject The New Jedi Order,WP:NJO,WP:TNJO,WP:The New Jedi Order,WookieeProject The New Jedi Order
 Wookieepedia:WookieeProject The Old Republic,WP:TOR,WP:SWTOR,WP:The Old Republic,WookieeProject The Old Republic

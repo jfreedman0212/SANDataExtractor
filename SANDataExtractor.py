@@ -33,6 +33,7 @@ supportSectionExists = False
 isNominatorSection = False
 isSupportSection = False
 isOpposeSection = False
+isCommentsSection = False
 inNomination = False
 
 wikiDate = (
@@ -288,7 +289,7 @@ def processWPs(x):
                 break
 
 def processOneVote(x):
-    if isSupportSection:
+    if (not isOpposeSection) and (not isCommentsSection) :
         # omit struck votes
         if re.search("^#:<s>", x):
             pass
@@ -395,11 +396,13 @@ def processObjector(x):
 
 def processNomEnd():
     global isOpposeSection
+    global isCommentsSection
     global inNomination
     global bylineExists
     global supportSectionExists
 
     isOpposeSection = False
+    isCommentsSection = False
     bylineExists = False
     supportSectionExists = False
 
@@ -515,13 +518,8 @@ for line in lines:
 
     elif re.search("^#", line): # process each vote
         if not currentNom.nominator:
-            if supportSectionExists:
-                if not bylineExists:
-                    processNominator(line)
-                    processStartDate(line)
-            else:
-                processNominator(line)
-                processStartDate(line)
+            processNominator(line)
+            processStartDate(line)
         else:
             processOneVote(line)
 
@@ -530,6 +528,7 @@ for line in lines:
 
     elif re.search(patternComments, line):
         isOpposeSection = False
+        isCommentsSection = True
 
     elif re.search(patternEnddate, line):
         processEndDate(line)

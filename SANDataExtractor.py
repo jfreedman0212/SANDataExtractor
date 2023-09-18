@@ -188,7 +188,8 @@ def processNominator(inputPart):
         userPages.sort()
 
         # concatenate co-nominator usernames
-        currentNom.nominator += ", " + ", ".join(userPages)
+        #currentNom.nominator += ", " + ", ".join(userPages)
+        currentNom.nominator += ", ".join(userPages)
     except IndexError:
         print(
             "Error in fetching username from byline signature on " +
@@ -215,7 +216,7 @@ def processStartDate(inputPart):
     try:
         timestamp = re.findall(
             (
-                r"\d{1,2}: ?\d{2},? " + wikiDate + r"[^0-9]*\(UTC\)"
+                r"\d{1,2}: ?\d{2},? +" + wikiDate + r"[^0-9]*\((?:UTC|GMT)\)"
             ),
             inputPart
         )[0]
@@ -229,7 +230,7 @@ def processStartDate(inputPart):
         timestamp = ""
 
     if timestamp:
-        dateTime = re.sub(r"[^0-9]*\(UTC\)", "", timestamp)
+        dateTime = re.sub(r"[^0-9]*\((?:UTC|GMT)\)", "", timestamp)
         date = re.findall(wikiDate, dateTime)[0]
 
         # process date to the format used in spreadsheet
@@ -247,7 +248,7 @@ def processStartDate(inputPart):
 def processArchivalDate(x):
     currentNom.enddate = re.sub(r"^\*'''Word count at nomination time''': ", "", x).strip()
     currentNom.enddate = re.findall(
-        r"\d{1,2}: ?\d{2},? " + wikiDate,
+        r"\d{1,2}: ?\d{2},? +" + wikiDate,
         currentNom.enddate
     )[0]
 
@@ -370,10 +371,10 @@ def processEndDate(x):
     global isOpposeSection
 
     isOpposeSection = False
-    currentNom.enddate = re.sub(r"(^.*approved\||[^0-9]*\(UTC\)|\}\})", "", x).strip()
+    currentNom.enddate = re.sub(r"(^.*approved\||[^0-9]*\((?:UTC|GMT)\)|\}\})", "", x).strip()
     try:
         currentNom.enddate = re.findall(
-            r"\d{1,2}: ?\d{2},? " + wikiDate,
+            r"\d{1,2}: ?\d{2},? +" + wikiDate,
             currentNom.enddate
         )[0]
     except IndexError:
@@ -387,10 +388,11 @@ def processEndDate(x):
 
     # process usernames in objections
 
-    currentNom.objectors = []
+    #currentNom.objectors = []
 
 def processObjector(x):
-    namePart = re.findall(patternUserLink + r".*(\||\/|\])", x)[0]
+    #namePart = re.findall(patternUserLink + r".*(\||\/|\])", x)[0]
+    namePart = re.findall(patternUserLink + r"[^\|\/\]]*(?:\||\/|\])", x)[0]
     name = re.sub("(" + patternUserLink + r"|\|.*|\/.*)", "", namePart)
     currentNom.objectors.append(name)
 
@@ -456,7 +458,7 @@ def processNomEnd():
         # pad the list with empty entries
         while spreadsheetConstant > len(currentNom.objectors):
             currentNom.objectors.append("")
-
+        
         # save the data about the current nom
         noms.append(copy.deepcopy(currentNom))
         inNomination = False
@@ -465,7 +467,7 @@ def writeNomDataToFile():
     with open(resultsFile, "a", encoding="utf8") as f:
         for x in noms:
             f.write(
-                x.nominator[2:] + separator +
+                x.nominator + separator +
                 x.article + separator +
                 "" + separator + # continuity
                 x.process + separator +
@@ -534,9 +536,7 @@ for line in lines:
         processEndDate(line)
 
     elif re.search(patternUserLink, line):
-        if isNominatorSection:
-            processNominator(line)
-        elif isOpposeSection:
+        if isOpposeSection:
             processObjector(line)
 
     elif re.search(patternNomEnd, line):

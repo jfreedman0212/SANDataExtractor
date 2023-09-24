@@ -201,6 +201,7 @@ def processNominator(inputPart):
 
 def processStartDate(inputPart):
     dateFormatCurrent = dateFormat
+    timestamp = ""
 
     if not re.search((
         r"\d+ (?:January|February|March|April|May|June|" +
@@ -216,21 +217,31 @@ def processStartDate(inputPart):
     try:
         timestamp = re.findall(
             (
-                r"\d{1,2}: ?\d{2},? +" + wikiDate + r"[^0-9]*\((?:UTC|GMT)\)"
+                r"\d{1,2}: ?\d{2},? +" + wikiDate + r"[^0-9]*\(?(?:UTC|GMT)\)?"
             ),
             inputPart
         )[0]
     except IndexError:
-        print(
-            "Error in fetching timestamp from byline signature on " +
-            currentNom.process +
-            ": " +
-            currentNom.article
-        )
-        timestamp = ""
+        pass
+    if not timestamp:
+        try:
+            timestamp = re.findall(
+                (
+                    wikiDate + ", " + r"\d{1,2}: ?\d{2} \(?(?:UTC|GMT)\)?"
+                ),
+                inputPart
+            )[0]
+        except IndexError:
+            print(
+                "Error in fetching timestamp from byline signature on " +
+                currentNom.process +
+                ": " +
+                currentNom.article
+            )
+            timestamp = ""
 
     if timestamp:
-        dateTime = re.sub(r"[^0-9]*\((?:UTC|GMT)\)", "", timestamp)
+        dateTime = re.sub(r"[^0-9]*\(?(?:UTC|GMT)\)?", "", timestamp)
         date = re.findall(wikiDate, dateTime)[0]
 
         # process date to the format used in spreadsheet
@@ -238,6 +249,13 @@ def processStartDate(inputPart):
         dateObject = datetime.strptime(dateSansComma, dateFormatCurrent)
         dateFinal = dateObject.strftime('%Y-%m-%d')
         dateTime = re.sub(date, "'" + dateFinal, dateTime)
+
+        # re-arrange datetime if it's in format "date, time"
+        if re.search("'" + dateFinal + r".*\d: ?\d", dateTime):
+            dateExtracted = re.findall("'" + dateFinal, dateTime)[0]
+            timeExtracted = re.findall(r"\d{1,2}: ?\d{2}", dateTime)[0]
+
+            dateTime = timeExtracted + ", " + dateExtracted
 
         dateTime = re.sub(",", "#", dateTime)
     else:
@@ -371,7 +389,7 @@ def processEndDate(x):
     global isOpposeSection
 
     isOpposeSection = False
-    currentNom.enddate = re.sub(r"(^.*approved\||[^0-9]*\((?:UTC|GMT)\)|\}\})", "", x).strip()
+    currentNom.enddate = re.sub(r"(^.*approved\||[^0-9]*\(?(?:UTC|GMT)\)?|\}\})", "", x).strip()
     try:
         currentNom.enddate = re.findall(
             r"\d{1,2}: ?\d{2},? +" + wikiDate,

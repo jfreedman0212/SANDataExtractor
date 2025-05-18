@@ -1,2 +1,12 @@
 ﻿*.txt
+*.csv
 !WPlist.txt
+
+# pywikibot files
+user-password.py
+*.lwp
+*.ctrl
+apicache/
+logs/
+__pycache__/
+*.pyc

@@ -1,6 +1,10 @@
 import copy
 import re
 from datetime import datetime
+import csv
+from main import retrieve_continuity_from_article, get_article_from_status_article
+from tqdm import tqdm
+
 
 class Nom:
     def __init__(self):
@@ -9,17 +13,18 @@ class Nom:
         self.result = ""
         self.nominator = ""
         self.startdate = ""
+        self.starttime = ""
         self.wordCountInitial = ""
         self.wordCountFinal = ""
         self.WPs = []
         self.votes = []
         self.objectors = []
         self.enddate = ""
+        self.endtime = ""
 
-spreadsheetConstant = 30
-separator = "# "
-sourceFile = "source.txt"
-resultsFile = "result.txt"
+
+sourceFile = "ca_noms_2025 (2).txt"
+resultsFile = "ca_noms_2025_result.csv"
 
 lines = []
 titleLines = []
@@ -61,7 +66,7 @@ patternResult = (
     r"(Comprehensive article nominations\|Comprehensive|Comprehensive article nominations\|comprehensive)" +
     patternResultEnd +
     "|" + patternResultStart +
-    r"(Good articles\|Good|Good articles\|good)" + # legacy structure
+    r"(Good articles\|Good|Good articles\|good)" +  # legacy structure
     patternResultEnd +
     "|" + patternResultStart +
     r"(Good article nominations\|Good|Good article nominations\|good)" +
@@ -84,11 +89,13 @@ patternNomEnd = r"\[\[Category:Archived nominations"
 WPlist = []
 currentNom = Nom()
 
+
 def fetchWPlist():
-    with open("WPlist.txt", "r", encoding="utf8") as f:
+    with open("WPlist.txt", "r", encoding="utf-8") as f:
         for x in f:
             x = x.rstrip("\n")
             WPlist.append(x.split(","))
+
 
 def processNomTypeAndTitle(x):
     global currentNom
@@ -117,6 +124,7 @@ def processNomTypeAndTitle(x):
         x
     ).strip()
 
+
 def processNomStart():
     global titlesAtStartOfNoms
     global nomCounter
@@ -127,11 +135,11 @@ def processNomStart():
             pass
         else:
             titlesAtStartOfNoms = False
-            for i,x in enumerate(lines, 1):
+            for i, x in enumerate(lines, 1):
                 if (
-                re.search(r"^\[\[Category:Archived nominations", lines[-i]) or
-                re.search(r"^Retrieving \d", lines[-i]) or
-                re.search("</div>", lines[-i])
+                    re.search(r"^\[\[Category:Archived nominations", lines[-i]) or
+                    re.search(r"^Retrieving \d", lines[-i]) or
+                    re.search("</div>", lines[-i])
                 ):
                     break
                 titleLines.append(lines[-i].rstrip("\n"))
@@ -140,6 +148,7 @@ def processNomStart():
     else:
         nomCounter += 1
         processNomTypeAndTitle(titleLines[-nomCounter])
+
 
 def processNomResult(x):
     if re.search("withdrawn", x):
@@ -150,6 +159,7 @@ def processNomResult(x):
         currentNom.result = "successful"
     else:
         currentNom.result = "other"
+
 
 def processNominatorAndStartDate(x):
     global bylineExists
@@ -188,8 +198,8 @@ def processNominator(inputPart):
         userPages.sort()
 
         # concatenate co-nominator usernames
-        #currentNom.nominator += ", " + ", ".join(userPages)
-        currentNom.nominator += ", ".join(userPages)
+        # currentNom.nominator += ", " + ", ".join(userPages)
+        currentNom.nominator += "; ".join(userPages)
     except IndexError:
         print(
             "Error in fetching username from byline signature on " +
@@ -197,7 +207,8 @@ def processNominator(inputPart):
             ": " +
             currentNom.article
         )
-        currentNom.nominator += ", " + inputPart
+        currentNom.nominator += "; " + inputPart
+
 
 def processStartDate(inputPart):
     dateFormatCurrent = dateFormat
@@ -248,41 +259,48 @@ def processStartDate(inputPart):
         dateSansComma = re.sub(",", "", date).strip()
         dateObject = datetime.strptime(dateSansComma, dateFormatCurrent)
         dateFinal = dateObject.strftime('%Y-%m-%d')
-        dateTime = re.sub(date, "'" + dateFinal, dateTime)
+        dateTime = re.sub(date, dateFinal, dateTime)
 
         # re-arrange datetime if it's in format "date, time"
-        if re.search("'" + dateFinal + r".*\d: ?\d", dateTime):
-            dateExtracted = re.findall("'" + dateFinal, dateTime)[0]
+        if re.search(dateFinal + r".*\d: ?\d", dateTime):
+            dateExtracted = re.findall(dateFinal, dateTime)[0]
             timeExtracted = re.findall(r"\d{1,2}: ?\d{2}", dateTime)[0]
 
             dateTime = timeExtracted + ", " + dateExtracted
 
-        dateTime = re.sub(",", "#", dateTime)
+        currentNom.startdate = dateTime.split(', ')[1]
+        currentNom.starttime = dateTime.split(', ')[0]
     else:
-        dateTime = ""
+        currentNom.startdate = ""
+        currentNom.starttime = ""
 
-    currentNom.startdate = dateTime
 
 def processArchivalDate(x):
-    currentNom.enddate = re.sub(r"^\*'''Word count at nomination time''': ", "", x).strip()
+    currentNom.enddate = re.sub(
+        r"^\*'''Word count at nomination time''': ", "", x).strip()
     currentNom.enddate = re.findall(
         r"\d{1,2}: ?\d{2},? +" + wikiDate,
         currentNom.enddate
     )[0]
 
+
 def processInitialWordCount(x):
-    currentNom.wordCountInitial = re.sub(r"^\*'''Date Archived''': ", "", x).strip()
+    currentNom.wordCountInitial = re.sub(
+        r"^\*'''Date Archived''': ", "", x).strip()
     currentNom.wordCountInitial = re.findall(
         r"\d+",
         currentNom.wordCountInitial
     )[0]
 
+
 def processFinalWordCount(x):
-    currentNom.wordCountFinal = re.sub(r"^\*'''Date Archived''': ", "", x).strip()
+    currentNom.wordCountFinal = re.sub(
+        r"^\*'''Date Archived''': ", "", x).strip()
     currentNom.wordCountFinal = re.findall(
         r"\d+",
         currentNom.wordCountFinal
     )[0]
+
 
 def processWPs(x):
     currentNom.WPs = []
@@ -303,12 +321,14 @@ def processWPs(x):
             # "WP:AST" (unbracketed) at the end of the line
             if re.search(WPname.upper() + "($|[^a-zA-Z0-9])", WPfield):
                 currentNom.WPs.append(
-                    re.sub("Wookieepedia:WookieeProject ", "", WookieeProject[0])
+                    re.sub("Wookieepedia:WookieeProject ",
+                           "", WookieeProject[0])
                 )
                 break
 
+
 def processOneVote(x):
-    if (not isOpposeSection) and (not isCommentsSection) :
+    if (not isOpposeSection) and (not isCommentsSection):
         # omit struck votes
         if re.search("^#:<s>", x):
             pass
@@ -321,7 +341,8 @@ def processOneVote(x):
             # fetch and save review panel vote tag if present
             if re.search(r"^# *(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x):
                 currentNom.votes.append(
-                    re.findall(r"^# *(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x)[0]
+                    re.findall(
+                        r"^# *(\{\{Inq\}\}|\{\{AC\}\}|\{\{EC\}\})", x)[0]
                 )
             else:
                 currentNom.votes.append("")
@@ -374,6 +395,7 @@ def processOneVote(x):
                 yearVote = ""
             currentNom.votes.append(yearVote)
 
+
 def endSupportSection():
     global isSupportSection
     global isOpposeSection
@@ -381,15 +403,13 @@ def endSupportSection():
     isSupportSection = False
     isOpposeSection = True
 
-    # pad the list with empty entries
-    while 3 * spreadsheetConstant > len(currentNom.votes):
-        currentNom.votes.append("")
 
 def processEndDate(x):
     global isOpposeSection
 
     isOpposeSection = False
-    currentNom.enddate = re.sub(r"(^.*approved\||[^0-9]*\(?(?:UTC|GMT)\)?|\}\})", "", x).strip()
+    currentNom.enddate = re.sub(
+        r"(^.*approved\||[^0-9]*\(?(?:UTC|GMT)\)?|\}\})", "", x).strip()
     try:
         currentNom.enddate = re.findall(
             r"\d{1,2}: ?\d{2},? +" + wikiDate,
@@ -406,13 +426,15 @@ def processEndDate(x):
 
     # process usernames in objections
 
-    #currentNom.objectors = []
+    # currentNom.objectors = []
+
 
 def processObjector(x):
-    #namePart = re.findall(patternUserLink + r".*(\||\/|\])", x)[0]
+    # namePart = re.findall(patternUserLink + r".*(\||\/|\])", x)[0]
     namePart = re.findall(patternUserLink + r"[^\|\/\]]*(?:\||\/|\])", x)[0]
     name = re.sub("(" + patternUserLink + r"|\|.*|\/.*)", "", namePart)
     currentNom.objectors.append(name)
+
 
 def processNomEnd():
     global isOpposeSection
@@ -452,12 +474,14 @@ def processNomEnd():
             dateObject = datetime.strptime(dateCorrected, dateFormatCurrent)
             dateFinal = dateObject.strftime('%Y-%m-%d')
 
-            dateTime = re.sub(dateActual, "'" + dateFinal, currentNom.enddate)
+            dateTime = re.sub(dateActual, dateFinal, currentNom.enddate)
             dateTime = re.sub(",", "#", dateTime, 1)
 
-            currentNom.enddate = dateTime
+            currentNom.enddate = dateFinal
+            currentNom.endtime = dateTime[:dateTime.index('#')]
         else:
-            currentNom.enddate = "#"
+            currentNom.enddate = ""
+            currentNom.endtime = ""
 
         # remove duplicate usernames and
         # sort the list of usernames mentioned in objections alphabetically
@@ -473,36 +497,62 @@ def processNomEnd():
             if y in currentNom.objectors:
                 currentNom.objectors.remove(y)
 
-        # pad the list with empty entries
-        while spreadsheetConstant > len(currentNom.objectors):
-            currentNom.objectors.append("")
-        
         # save the data about the current nom
         noms.append(copy.deepcopy(currentNom))
         inNomination = False
 
+
 def writeNomDataToFile():
-    with open(resultsFile, "a", encoding="utf8") as f:
-        for x in noms:
-            f.write(
-                x.nominator + separator +
-                x.article + separator +
-                "" + separator + # continuity
-                x.process + separator +
-                x.result + separator +
-                x.startdate + separator +
-                x.enddate + separator +
-                x.wordCountInitial + separator +
-                x.wordCountFinal + separator +
-                "; ".join(x.WPs) + separator +
-                "# ".join(x.votes) + separator +
-                "# ".join(x.objectors) + "\n"
+    with open(resultsFile, "w", encoding="utf-8") as f:
+        field_names = [
+            "Nominator",
+            "Article",
+            "Continuity",
+            "Nomination Type",
+            "Outcome",
+            "Start Time",
+            "Start Date",
+            "End Time",
+            "End Date",
+            "Start Word Count",
+            "End Word Count",
+            "Wookiee Projects"
+        ]
+        writer = csv.DictWriter(
+            f,
+            field_names,
+            quoting=csv.QUOTE_ALL,
+            doublequote=True,
+            escapechar='#'
+        )
+        writer.writeheader()
+
+        for nom in tqdm(noms):
+            writer.writerow(
+                {
+                    "Nominator": nom.nominator,
+                    "Article": nom.article,
+                    "Continuity": '; '.join(
+                        retrieve_continuity_from_article(
+                            get_article_from_status_article(nom.article)
+                        )
+                    ),
+                    "Nomination Type": nom.process,
+                    "Outcome": nom.result,
+                    "Start Time": nom.starttime,
+                    "Start Date": nom.startdate,
+                    "End Time": nom.endtime,
+                    "End Date": nom.enddate,
+                    "Start Word Count": nom.wordCountInitial,
+                    "End Word Count": nom.wordCountFinal,
+                    "Wookiee Projects": "; ".join(nom.WPs)
+                }
             )
 
 
 fetchWPlist()
 
-with open(sourceFile, "r", encoding="utf8") as f:
+with open(sourceFile, "r", encoding="utf-8") as f:
     for x in f:
         lines.append(x)
 
@@ -531,12 +581,12 @@ for line in lines:
     elif re.search(patternWPs, line):
         processWPs(line)
 
-    elif re.search(patternVotes, line): # enter support votes section
+    elif re.search(patternVotes, line):  # enter support votes section
         isNominatorSection = False
         supportSectionExists = True
         isSupportSection = True
 
-    elif re.search("^#", line): # process each vote
+    elif re.search("^#", line):  # process each vote
         if not currentNom.nominator:
             processNominator(line)
             processStartDate(line)
@@ -562,3 +612,4 @@ for line in lines:
 
 # output the nomination data as a txt (csv) file
 writeNomDataToFile()
+

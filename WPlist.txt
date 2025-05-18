@@ -35,5 +35,6 @@ Wookieepedia:WookieeProject The New Essential Guide to Characters,WP:NEGTC,Wooki
 Wookieepedia:WookieeProject The New Jedi Order,WP:NJO,WP:TNJO,WP:The New Jedi Order,WookieeProject The New Jedi Order
 Wookieepedia:WookieeProject The Old Republic,WP:TOR,WP:SWTOR,WP:The Old Republic,WookieeProject The Old Republic
 Wookieepedia:WookieeProject Video Games,WP:VG,WP:Video Games,WP:Video games,WookieeProject Video Games
+Wookieepedia:WookieeProject Visions,WP:Visions,WP:VISIONS,WookieeProject Visions
 Wookieepedia:WookieeProject Warfare,WP:Warfare,WP:EGTW,WP:TEGTW,WP:EGtW,WP:TEGtW,WookieeProject Warfare
 Wookieepedia:WookieeProject Women,WP:WOMEN,WP:Women,WookieeProject Women

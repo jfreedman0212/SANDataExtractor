@@ -2,6 +2,7 @@ import pywikibot
 import mwparserfromhell
 import re
 from enum import StrEnum
+import sys
 
 
 class Continuity(StrEnum):
@@ -67,7 +68,7 @@ def retrieve_continuity_from_article(article_name):
     # sometimes the article name changes. follow the redirect if this happens
     if page.isRedirectPage():
         page = page.getRedirectTarget()
-
+    
     # skip_style_tags=True is necessary because some Top tags have styling in
     # them. the parser will skip the Top tag in those cases w/o this attribute.
     wikicode = mwparserfromhell.parse(page.text, skip_style_tags=True)
@@ -86,7 +87,7 @@ def retrieve_continuity_from_article(article_name):
 
     # just skip it if there's no continuities
     if top is None:
-        print(f"{article_name} does not have a Top template.")
+        print(f"{article_name} does not have a Top template.", file=sys.stderr)
         return continuities
 
     if article_name.endswith('/Legends'):

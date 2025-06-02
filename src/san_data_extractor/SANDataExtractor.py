@@ -23,8 +23,8 @@ class Nom:
         self.endtime = ""
 
 
-sourceFile = "ca_noms_2025 (2).txt"
-resultsFile = "ca_noms_2025_result.csv"
+sourceFile = "fa_noms_2025 (2).txt"
+resultsFile = "fa_noms_2025_result.csv"
 
 lines = []
 titleLines = []

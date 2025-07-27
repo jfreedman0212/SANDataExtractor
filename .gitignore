@@ -10,3 +10,6 @@ apicache/
 logs/
 __pycache__/
 *.pyc
+CLAUDE.local.md
+.claude
+.mcp.json
